@@ -16,3 +16,9 @@ export interface BaseMovieProps {
     vote_count: number;
     favourite?: boolean;
   }
+
+  export interface BaseMovieListProps { 
+    movies: BaseMovie[];
+  }  
+
+  
