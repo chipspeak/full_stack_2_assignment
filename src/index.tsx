@@ -4,6 +4,7 @@ import sample from './stories/sampleData'
 
 const movies = [sample, sample, sample, sample, sample, sample, sample];
 
+// eslint-disable-next-line react-refresh/only-export-components
 const App = () => {
   return (
       <HomePage movies={movies} />
