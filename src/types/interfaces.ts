@@ -27,6 +27,12 @@ export interface BaseMovieProps {
     selectFavourite: (movieId: number) => void;  //add this
   }
 
+  export interface Review{
+    id: string;
+    content: string
+    author: string
+  }
+
   export interface MovieDetailsProps extends BaseMovieProps {
     genres: {
       id: number;
