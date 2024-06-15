@@ -48,11 +48,6 @@ export interface BaseMovieProps {
     images: MovieImage[];
   }
 
-  export interface FilterMoviesCardProps {
-    titleFilter: string;
-    genreFilter: string;
-  }
-
   export type FilterOption = "title" | "genre";
 
   
