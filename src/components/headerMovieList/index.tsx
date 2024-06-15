@@ -17,6 +17,7 @@ const styles = {
 
 interface HeaderProps {
     title: string;
+
 }
 
 const Header: React.FC<HeaderProps> = (headerProps) => {
@@ -33,6 +34,7 @@ const Header: React.FC<HeaderProps> = (headerProps) => {
             <Typography variant="h4" component="h3">
                 {title}
             </Typography>
+            
             <IconButton
                 aria-label="go forward"
             >
