@@ -46,7 +46,7 @@ export interface BaseMovieProps {
 
   export interface MovieImage {
     file_path: string;
-    aspect_ratio?: number; //some props are optional...
+    aspect_ratio?: number;
     height?: number;
     iso_639_1?: string;
     vote_average?: number;
@@ -60,5 +60,19 @@ export interface BaseMovieProps {
   }
 
   export type FilterOption = "title" | "genre";
+
+  export interface GenreData {
+    genres: {
+      id: string;
+      name: string
+    }[];
+  }
+  
+  export interface DiscoverMovies {
+    page: number;	
+    total_pages: number;
+    total_results: number;
+    results: BaseMovieProps[];
+  }
 
   
