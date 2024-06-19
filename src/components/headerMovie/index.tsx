@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
+import { MoviesContext } from "../../contexts/moviesContext";
 import { Avatar } from "@mui/material";
 import { MovieDetailsProps } from "../../types/interfaces"; 
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -23,8 +24,14 @@ const styles = {
 };
 
 const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
-  const favourites = JSON.parse(localStorage.getItem("favourites") || '[]');
-  const isFavourite = favourites.find((favourite: { id: number; }) => favourite.id === movie.id);
+
+  const { favourites } = useContext(MoviesContext);
+
+  let favourite = movie.favourite;
+
+  if (favourites.find((id) => id === movie.id)) 
+    console.log("Favourite movie");
+    favourite = true;
   
   return (
     <Paper component="div" sx={styles.root}>
@@ -40,7 +47,7 @@ const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
         <span>{`${movie.tagline}`} </span>
       </Typography>
       {
-          isFavourite ? (
+          favourite ? (
             <Avatar sx={styles.avatar}>
               <FavoriteIcon />
             </Avatar>
