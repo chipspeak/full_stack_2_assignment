@@ -6,12 +6,17 @@ interface MovieContextInterface {
     favourites: number[];
     addToFavourites: ((movie: BaseMovieProps) => void);
     removeFromFavourites: ((movie: BaseMovieProps) => void);
+    addToPlaylist: ((movie: BaseMovieProps) => void);  // NEW
+    removeFromPlaylist: ((movie: BaseMovieProps) => void);  // NEW
     addReview: ((movie: BaseMovieProps, review: Review) => void);  // NEW
 }
+
 const initialContextState: MovieContextInterface = {
     favourites: [],
     addToFavourites: () => {},
     removeFromFavourites: () => {},
+    addToPlaylist: (movie) => { movie.id },  // NEW
+    removeFromPlaylist: (movie) => { movie.id },  // NEW
     addReview: (movie, review) => { movie.id, review},  // NEW
 };
 
@@ -38,12 +43,33 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         setFavourites((prevFavourites) => prevFavourites.filter((mId) => mId !== movie.id));
     }, []);
 
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [playlist, setPlaylist] = useState<number[]>([]);  // NEW
+
+    const addToPlaylist = useCallback((movie: BaseMovieProps) => {  // NEW
+        setPlaylist((prevPlaylist) => {
+            if (!prevPlaylist.includes(movie.id)) {
+                return [...prevPlaylist, movie.id];
+            }
+            return prevPlaylist;
+        });
+    }, []);
+
+    const removeFromPlaylist = useCallback((movie: BaseMovieProps) => {  // NEW
+        setPlaylist((prevPlaylist) => prevPlaylist.filter((mId) => mId !== movie.id));
+    }, []);
+
+    
+
     return (
         <MoviesContext.Provider
             value={{
                 favourites,
                 addToFavourites,
                 removeFromFavourites,
+                addToPlaylist,  // NEW
+                removeFromPlaylist,  // NEW
                 addReview,    // NEW
             }}
         >
