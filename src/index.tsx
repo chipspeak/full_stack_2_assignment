@@ -8,6 +8,7 @@ import MovieReviewPage from "./pages/movieReviewPage";
 import SiteHeader from "./components/siteHeader";
 import UpcomingMoviePage from "./pages/upcomingMoviesPage";
 import MoviesContextProvider from "./contexts/moviesContext";
+import AddMovieReviewPage from './pages/addMovieReviewPage';
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/reviews/:id" element={<MovieReviewPage />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/upcoming" element={<UpcomingMoviePage />} />
+            <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </MoviesContextProvider>

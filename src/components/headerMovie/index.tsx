@@ -24,14 +24,16 @@ const styles = {
 };
 
 const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
-
+  /*
   const { favourites } = useContext(MoviesContext);
+
 
   let favourite = movie.favourite;
 
   if (favourites.find((id) => id === movie.id)) 
     console.log("Favourite movie");
     favourite = true;
+    */
   
   return (
     <Paper component="div" sx={styles.root}>
@@ -47,7 +49,7 @@ const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
         <span>{`${movie.tagline}`} </span>
       </Typography>
       {
-          favourite ? (
+          movie.favourite ? (
             <Avatar sx={styles.avatar}>
               <FavoriteIcon />
             </Avatar>
