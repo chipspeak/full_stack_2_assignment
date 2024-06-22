@@ -15,6 +15,7 @@ export interface BaseMovieProps {
     revenue: number;
     vote_count: number;
     favourite?: boolean;
+    playlist?: boolean;
     genre_ids?: number[];
   }
 

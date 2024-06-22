@@ -4,7 +4,7 @@ import { BaseMovieProps, Review } from "../types/interfaces";
 
 interface MovieContextInterface {
     favourites: number[];
-    playlist: number[];  // NEW
+    playlists: number[];  // NEW
     addToFavourites: ((movie: BaseMovieProps) => void);
     removeFromFavourites: ((movie: BaseMovieProps) => void);
     addToPlaylist: ((movie: BaseMovieProps) => void);  // NEW
@@ -14,10 +14,10 @@ interface MovieContextInterface {
 
 const initialContextState: MovieContextInterface = {
     favourites: [],
-    playlist: [],
+    playlists: [],
     addToFavourites: () => {},
     removeFromFavourites: () => {},
-    addToPlaylist: (movie) => { movie.id },  // NEW
+    addToPlaylist: () => {},  // NEW
     removeFromPlaylist: (movie) => { movie.id },  // NEW
     addReview: (movie, review) => { movie.id, review},  // NEW
 };
@@ -35,6 +35,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const addToFavourites = useCallback((movie: BaseMovieProps) => {
         setFavourites((prevFavourites) => {
             if (!prevFavourites.includes(movie.id)) {
+                console.log("Added to favourites");
                 return [...prevFavourites, movie.id];
             }
             return prevFavourites;
@@ -47,11 +48,12 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
 
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [playlist, setPlaylist] = useState<number[]>([]);  // NEW
+    const [playlists, setPlaylist] = useState<number[]>([]);  // NEW
 
     const addToPlaylist = useCallback((movie: BaseMovieProps) => {  // NEW
         setPlaylist((prevPlaylist) => {
             if (!prevPlaylist.includes(movie.id)) {
+                console.log("Added to playlist");
                 return [...prevPlaylist, movie.id];
             }
             return prevPlaylist;
@@ -68,7 +70,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         <MoviesContext.Provider
             value={{
                 favourites,
-                playlist,  // NEW
+                playlists,  // NEW
                 addToFavourites,
                 removeFromFavourites,
                 addToPlaylist,  // NEW

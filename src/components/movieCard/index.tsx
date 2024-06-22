@@ -7,6 +7,7 @@ import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaylistIcon from "@mui/icons-material/PlaylistAdd";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
@@ -43,16 +44,32 @@ const MovieCard: React.FC<MovieCardProps> = ({movie, action}) => {
   if (favourites.find((id) => id === movie.id)) 
     movie.favourite = true;
 
+  const { playlists } = useContext(MoviesContext);
+
+  if (playlists.find((id) => id === movie.id)) 
+    movie.playlist = true;
+
+  // NEW function to check if movie is in favourites or playlist so either icon can be displayed
+  const checkIcon = () => {
+    if (movie.favourite) {
+      return (
+        <Avatar sx={styles.avatar}>
+          <FavoriteIcon />
+        </Avatar>
+      );
+    } else if (movie.playlist) {
+      return (
+        <Avatar sx={styles.avatar}>
+          <PlaylistIcon />
+        </Avatar>
+      );
+    }
+  }
+
   return (
     <Card sx={styles.card}>
             <CardHeader
-        avatar={
-          movie.favourite ? (
-            <Avatar sx={styles.avatar}>
-              <FavoriteIcon />
-            </Avatar>
-          ) : null
-        }
+        avatar={checkIcon()}
         title={
           <Typography variant="h5" component="p">
             {movie.title}{" "}

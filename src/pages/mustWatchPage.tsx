@@ -23,7 +23,7 @@ const genreFiltering = {
 };
 
 const MustWatchPage: React.FC = () => {
-  const { playlist: movieIds } = useContext(MoviesContext);
+  const { playlists: movieIds } = useContext(MoviesContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering]
   );

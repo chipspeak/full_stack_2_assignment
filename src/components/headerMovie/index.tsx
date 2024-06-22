@@ -9,6 +9,7 @@ import { MoviesContext } from "../../contexts/moviesContext";
 import { Avatar } from "@mui/material";
 import { MovieDetailsProps } from "../../types/interfaces"; 
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaylistIcon from "@mui/icons-material/PlaylistAdd";
 
 const styles = {
     root: {  
@@ -24,16 +25,18 @@ const styles = {
 };
 
 const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
-  /*
+  
+  // favourites
   const { favourites } = useContext(MoviesContext);
-
-
   let favourite = movie.favourite;
-
   if (favourites.find((id) => id === movie.id)) 
-    console.log("Favourite movie");
     favourite = true;
-    */
+
+  // playlists
+  const { playlists } = useContext(MoviesContext);
+  let playlist = movie.playlist;
+  if (playlists.find((id) => id === movie.id)) 
+    playlist = true;
   
   return (
     <Paper component="div" sx={styles.root}>
@@ -49,9 +52,16 @@ const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
         <span>{`${movie.tagline}`} </span>
       </Typography>
       {
-          movie.favourite ? (
+          favourite ? (
             <Avatar sx={styles.avatar}>
               <FavoriteIcon />
+            </Avatar>
+          ) : null
+        }
+              {
+          playlist ? (
+            <Avatar sx={styles.avatar}>
+              <PlaylistIcon />
             </Avatar>
           ) : null
         }
