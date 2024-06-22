@@ -4,6 +4,7 @@ import { BaseMovieProps, Review } from "../types/interfaces";
 
 interface MovieContextInterface {
     favourites: number[];
+    playlist: number[];  // NEW
     addToFavourites: ((movie: BaseMovieProps) => void);
     removeFromFavourites: ((movie: BaseMovieProps) => void);
     addToPlaylist: ((movie: BaseMovieProps) => void);  // NEW
@@ -13,6 +14,7 @@ interface MovieContextInterface {
 
 const initialContextState: MovieContextInterface = {
     favourites: [],
+    playlist: [],
     addToFavourites: () => {},
     removeFromFavourites: () => {},
     addToPlaylist: (movie) => { movie.id },  // NEW
@@ -66,6 +68,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         <MoviesContext.Provider
             value={{
                 favourites,
+                playlist,  // NEW
                 addToFavourites,
                 removeFromFavourites,
                 addToPlaylist,  // NEW
