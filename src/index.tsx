@@ -13,6 +13,12 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MustWatchPage from "./pages/mustWatchPage";
 
+
+// Apply global styles to the body element
+document.body.style.backgroundColor = '#1a1a1a'; // Very dark grey/black
+document.body.style.color = 'white'; // Text color
+
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

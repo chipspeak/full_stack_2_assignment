@@ -54,6 +54,16 @@ export interface BaseMovieProps {
     vote_count?: number;
     width?: number;
   }
+
+  export interface MovieBackdrop {
+    file_path: string;
+    aspect_ratio?: number;
+    height?: number;
+    iso_639_1?: string;
+    vote_average?: number;
+    vote_count?: number;
+    width?: number;
+  }
   
   export interface MoviePageProps {
     movie: MovieDetailsProps;

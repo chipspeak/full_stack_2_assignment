@@ -6,7 +6,8 @@ import {  MovieListPageTemplateProps } from "../../types/interfaces";
 
 const styles = {
   root: { 
-    backgroundColor: "#bfbfbf",
+    backgroundColor: "#1a1a1a",
+    color: "white",
   }
 };
 
