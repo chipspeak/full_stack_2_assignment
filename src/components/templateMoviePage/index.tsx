@@ -14,7 +14,6 @@ const styles = {
     backgroundSize: "cover",
     backgroundPosition: "center",
     position: "relative",
-    zIndex: -1, // Pushing the backdrop behind other content 
   },
   contentContainer: {
     flex: 1,
