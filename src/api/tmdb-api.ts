@@ -65,6 +65,44 @@ export const getMovies = () => {
       });
   };
   
+  export const getMovieVideos = (id: string | number) => {
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch videos");
+        }
+        return response.json();
+      })
+      .then((json) => {
+        const results = json.results || [];
+        return { results };
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  export const getMovieCast = (id: string | number) => {
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch cast data");
+        }
+        return response.json();
+      })
+      .then((json) => {
+        const cast = json.cast || [];
+        return { cast }; // Return an object with the cast array
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+  
 
   export const getMovieReviews = (id: string | number) => { //movie id can be string or number
     return fetch(

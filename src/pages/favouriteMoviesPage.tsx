@@ -12,6 +12,7 @@ import MovieFilterUI, {
   genreFilter,
 } from "../components/movieFilterUI";
 
+// Same filtering as on the main page
 const titleFiltering = {
   name: "title",
   value: "",
@@ -39,18 +40,20 @@ const FavouriteMoviesPage: React.FC = () => {
     })
   );
 
-  // Check if any of the parallel queries is still loading.
+  // Check if any of the parallel queries are still loading.
   const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
 
   if (isLoading) {
     return <Spinner />;
   }
 
+  //  Filtering through the favourites list to display only the movies that match the filter criteria
   const allFavourites = favouriteMovieQueries.map((q) => q.data);
   const displayedMovies = allFavourites
     ? filterFunction(allFavourites)
     : [];
 
+  // Updating the filter values
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value: value };
     const updatedFilterSet =
@@ -63,7 +66,7 @@ const FavouriteMoviesPage: React.FC = () => {
   return (
     <>
    <PageTemplate
-        title="Favourite Movies"
+        title="FAVOURITES"
         movies={displayedMovies}
         action={(movie) => {
           return (

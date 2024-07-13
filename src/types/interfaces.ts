@@ -10,6 +10,7 @@ export interface BaseMovieProps {
     vote_average: number;
     popularity: number;
     poster_path?: string;
+    backdrop_path?: string;
     tagline: string;
     runtime: number;
     revenue: number;
@@ -68,6 +69,7 @@ export interface BaseMovieProps {
   export interface MoviePageProps {
     movie: MovieDetailsProps;
     images: MovieImage[];
+    backdrop: MovieBackdrop;
   }
 
   export type FilterOption = "title" | "genre";
@@ -94,4 +96,9 @@ export interface BaseMovieProps {
     movieId: number,
   }
 
+  export interface MovieCastMember {
+    id: number;
+    name: string;
+    profile_path?: string;
+  }
   

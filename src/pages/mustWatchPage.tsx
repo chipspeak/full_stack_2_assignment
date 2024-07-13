@@ -11,6 +11,7 @@ import MovieFilterUI, {
   genreFilter,
 } from "../components/movieFilterUI";
 
+// Same filtering as on the main page
 const titleFiltering = {
   name: "title",
   value: "",
@@ -22,13 +23,14 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
+// Must Watch Page
 const MustWatchPage: React.FC = () => {
   const { playlists: movieIds } = useContext(MoviesContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering]
   );
 
-  // Create an array of queries and run them in parallel.
+  // Creating an array of queries and run them in parallel
   const playlistMovieQueries = useQueries(
     movieIds.map((movieId) => {
       return {
@@ -38,13 +40,17 @@ const MustWatchPage: React.FC = () => {
     })
   );
 
-  // Check if any of the parallel queries is still loading.
+  // Check if any of the parallel queries is still loading
   const isLoading = playlistMovieQueries.find((m) => m.isLoading === true);
 
+  // If any of the queries are still loading, return a spinner
   if (isLoading) {
     return <Spinner />;
   }
 
+  /* Filtering through the playlist to display only the movies that match the filter criteria
+     Same logic as the faves page
+  */
   const allMoviesInPlaylist = playlistMovieQueries.map((q) => q.data);
   const displayedMovies = allMoviesInPlaylist
     ? filterFunction(allMoviesInPlaylist)
@@ -62,7 +68,7 @@ const MustWatchPage: React.FC = () => {
   return (
     <>
    <PageTemplate
-        title="Must Watch Movies"
+        title="MUST WATCH"
         movies={displayedMovies}
         action={(movie) => {
           return (

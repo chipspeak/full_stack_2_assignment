@@ -13,7 +13,7 @@ const styles = {
         flexWrap: "wrap",
         marginBottom: 4.0,
         padding: 3.0,
-        backgroundColor: "#1a1a1a",
+        backgroundColor: "rgba(0, 0, 0, 0)", // Set the background color to transparent for now. was a black box but I prefer the backdrop
         color: "white",
     },
 };

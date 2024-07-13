@@ -1,5 +1,5 @@
 import React from "react";
-import PageTemplate from "../components/templateMovieListPage";
+import MovieListPageTemplate from "../components/templateMovieListPage";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import { BaseMovieProps } from "../types/interfaces";
 import { getMovies } from "../api/tmdb-api";
@@ -12,7 +12,7 @@ import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 
-
+// Same filtering as on the main page
 const titleFiltering = {
   name: "title",
   value: "",
@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
     return <h1>{error.message}</h1>;
   }
 
-
+  // Same logic as in the other pages featuring filters
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value: value };
     const updatedFilterSet =
@@ -49,13 +49,16 @@ const HomePage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
+  // Desctructuring the data
   const movies = data ? data.results : [];
+
+  // Setting the displayed movies as the result of the filter function
   const displayedMovies = filterFunction(movies);
 
   return (
     <>
-      <PageTemplate
-        title="Discover Movies"
+      <MovieListPageTemplate
+        title="DISCOVER MOVIES"
         movies={displayedMovies}
         action={(movie: BaseMovieProps) => {
           return <AddToFavouritesIcon {...movie} />

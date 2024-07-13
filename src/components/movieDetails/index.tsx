@@ -23,9 +23,9 @@ const styles = {
   },
   chip: {
     color: "#ffffff",
-    backgroundColor: "transparent", // transparent background
+    backgroundColor: "transparent", // Transparent background
     margin: "0.5rem", 
-    border: "1px solid #ffffff", // white border to ensure visibility
+    border: "2px solid #ffffff", // White border to ensure visibility
   },
   fab: {
     position: "fixed",
@@ -34,7 +34,6 @@ const styles = {
   },
   overviewText: {
     color: "#ffffff",
-    marginTop: "1rem",
   },
 };
 

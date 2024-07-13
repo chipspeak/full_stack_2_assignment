@@ -13,7 +13,6 @@ import Spinner from "../components/spinner";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 
-
 const titleFiltering = {
   name: "title",
   value: "",
@@ -56,7 +55,7 @@ const UpcomingMoviesPage: React.FC = () => {
   return (
     <>
       <PageTemplate
-        title="Upcoming Movies"
+        title="UPCOMING MOVIES"
         movies={displayedMovies}
         action={(movie: BaseMovieProps) => {
           return <AddToPlaylistIcon {...movie} />

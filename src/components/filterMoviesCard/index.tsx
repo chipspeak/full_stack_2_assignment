@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react"; //update existing import
+import React, { ChangeEvent } from "react";
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -7,31 +7,52 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import SortIcon from "@mui/icons-material/Sort";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { FilterOption, GenreData } from "../../types/interfaces"; //include GenreData interface 
+import { FilterOption, GenreData } from "../../types/interfaces"; // Include GenreData interface
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from '../spinner';
 
+// Inverting the colors from the lab similiar to the other components
 const styles = {
   root: {
     maxWidth: 345,
+    backgroundColor: "#1a1a1a",
+    color: "white",
   },
   media: { height: 300 },
 
   formControl: {
     margin: 1,
     minWidth: 220,
-    backgroundColor: "rgb(255, 255, 255)",
+    color: "white",
+    backgroundColor: "#1a1a1a",
+    '& .MuiInputLabel-root': {
+      color: "white",
+    },
+    '& .MuiSelect-root': {
+      color: "white",
+    },
+    '& .MuiFilledInput-root': {
+      backgroundColor: "#1a1a1a",
+      color: "white",
+    },
+    '& .MuiFilledInput-input': {
+      color: "white",
+    },
+    '& .MuiMenuItem-root': {
+      color: "white",
+      backgroundColor: "#1a1a1a",
+    },
+    '& .MuiMenuItem-root:hover': {
+      backgroundColor: "#1a1a1a",
+    },
   },
 };
 
-
-
 interface FilterMoviesCardProps {
-  onUserInput: (f: FilterOption, s: string) => void; // Add this line
+  onUserInput: (f: FilterOption, s: string) => void;
   titleFilter: string;
   genreFilter: string;
 }
@@ -51,16 +72,17 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
   }
 
   const handleChange = (e: SelectChangeEvent, type: FilterOption, value: string) => {
-    e.preventDefault()
-      onUserInput(type, value)
+    e.preventDefault();
+    onUserInput(type, value);
   };
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-    handleChange(e, "title", e.target.value)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handleChange(e as any, "title", e.target.value);
   }
 
   const handleGenreChange = (e: SelectChangeEvent) => {
-    handleChange(e, "genre", e.target.value)
+    handleChange(e, "genre", e.target.value);
   };
 
   return (
@@ -79,27 +101,27 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
             value={titleFilter}
             variant="filled"
             onChange={handleTextChange}
+            InputLabelProps={{ style: { color: 'white' } }}
           />
           <FormControl sx={styles.formControl}>
-						<InputLabel id='genre-label'>Genre</InputLabel>
-            <Select labelId="genre-label" id="genre-select" value={genreFilter} onChange={handleGenreChange} label="Genre">
-							{genres.map((genre) => {
-								return (
-									<MenuItem key={genre.id} value={genre.id}>
-										{genre.name}
-									</MenuItem>
-								);
-							})}
-						</Select>
-					</FormControl>
-        </CardContent>
-      </Card>
-      <Card sx={styles.root} variant="outlined">
-        <CardContent>
-          <Typography variant="h5" component="h1">
-            <SortIcon fontSize="large" />
-            Sort the movies.
-          </Typography>
+            <InputLabel id="genre-label" sx={{ color: "white" }}>Genre</InputLabel>
+            <Select
+              labelId="genre-label"
+              id="genre-select"
+              value={genreFilter}
+              onChange={handleGenreChange}
+              variant="filled"
+              sx={{ backgroundColor: "#1a1a1a", color: "white" }}
+            >
+              {genres.map((genre) => {
+                return (
+                  <MenuItem key={genre.id} value={genre.id}>
+                    {genre.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </CardContent>
       </Card>
     </>

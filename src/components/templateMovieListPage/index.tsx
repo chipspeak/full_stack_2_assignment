@@ -4,13 +4,16 @@ import Grid from "@mui/material/Grid";
 import MovieList from "../movieList";
 import {  MovieListPageTemplateProps } from "../../types/interfaces";
 
+// Again, setting the dark grey background color and ensuring some padding to prevent the expanded cards from prompting the horizontal scrollbar
 const styles = {
   root: { 
     backgroundColor: "#1a1a1a",
     color: "white",
+    padding: "20px",
   }
 };
 
+// This component is a template for the movie list page
 const MovieListPageTemplate: React.FC<MovieListPageTemplateProps> = ({ movies, title, action })=> {
   return (
     <Grid container sx={styles.root}>
