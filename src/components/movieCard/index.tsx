@@ -1,31 +1,28 @@
-import React, { useContext } from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-// import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import PlaylistIcon from "@mui/icons-material/PlaylistAdd";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
+import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
-import img from '../../images/film-poster-placeholder.png';
-import { MoviesContext } from "../../contexts/moviesContext";
-import { BaseMovieProps } from "../../types/interfaces"; 
+import img from "../../images/film-poster-placeholder.png";
+import { BaseMovieProps } from "../../types/interfaces";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 
 const styles = {
   card: {
     position: "relative",
     borderRadius: 5,
     overflow: "hidden",
+    boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
     transition: "transform 0.3s, box-shadow 0.3s",
     "&:hover": {
       transform: "scale(1.05)",
-      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+      boxShadow: "0 10px 20px rgba(255, 255, 255, 0.7)",
+      outline: "2px solid rgba(255, 255, 255, 0.5)", // Add white outline on hover
     },
   },
   media: {
@@ -47,6 +44,12 @@ const styles = {
       opacity: 1,
     },
   },
+  chip: {
+    color: "#ffffff",
+    backgroundColor: "transparent",
+    margin: "0.5rem",
+    border: "2px solid #ffffff",
+  },
   iconButton: {
     color: "white",
   },
@@ -57,21 +60,8 @@ interface MovieCardProps {
   action: (m: BaseMovieProps) => React.ReactNode;
 }
 
+// Movie card component
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
-  const { favourites, playlists } = useContext(MoviesContext);
-
-  if (favourites.find((id) => id === movie.id)) movie.favourite = true;
-  if (playlists.find((id) => id === movie.id)) movie.playlist = true;
-
-  // Function to get appropriate icon
-  const getIcon = () => {
-    if (movie.favourite) {
-      return <FavoriteIcon />;
-    } else if (movie.playlist) {
-      return <PlaylistIcon />;
-    }
-    return null;
-  };
 
   return (
     <Card sx={styles.card}>
@@ -85,29 +75,34 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
       />
       <Box sx={styles.overlay}>
         <Typography variant="h6">{movie.title}</Typography>
-        <Grid container justifyContent="space-between" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center" spacing={1}>
           <Grid item>
-            <Typography variant="body2">
-              <CalendarIcon fontSize="small" /> {movie.release_date}
-            </Typography>
+            <Chip
+              icon={<CalendarIcon fontSize="small" />}
+              label={movie.release_date}
+              sx={styles.chip}
+            />
           </Grid>
           <Grid item>
-            <Typography variant="body2">
-              <StarRateIcon fontSize="small" /> {movie.vote_average}
-            </Typography>
+            <Chip
+              icon={<StarRateIcon fontSize="small" />}
+              label={movie.vote_average.toString()}
+              sx={styles.chip}
+            />
+          </Grid>
+          <Grid item>
+            {action(movie)}
+          </Grid>
+          <Grid item>
+            <Link to={`/movies/${movie.id}`}>
+              <IconButton sx={styles.iconButton}>
+                <Button variant="outlined" size="small" color="primary">
+                  More Info
+                </Button>
+              </IconButton>
+            </Link>
           </Grid>
         </Grid>
-        <CardActions>
-          <IconButton sx={styles.iconButton}>{getIcon()}</IconButton>
-          {action(movie)}
-          <Link to={`/movies/${movie.id}`}>
-            <IconButton sx={styles.iconButton}>
-              <Button variant="outlined" size="small" color="primary">
-                More Info
-              </Button>
-            </IconButton>
-          </Link>
-        </CardActions>
       </Box>
     </Card>
   );

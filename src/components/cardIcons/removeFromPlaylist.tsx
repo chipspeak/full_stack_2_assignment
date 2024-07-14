@@ -17,7 +17,7 @@ return (
     aria-label="remove from must watch"
     onClick={onUserRequest}
   >
-    <DeleteIcon color="primary" fontSize="large" />
+    <DeleteIcon color="primary" fontSize="medium" />
   </IconButton>
 );
 };

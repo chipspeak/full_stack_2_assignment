@@ -12,29 +12,33 @@ import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 
-// Same filtering as on the main page
+// Filtering via title
 const titleFiltering = {
   name: "title",
   value: "",
   condition: titleFilter,
 };
 
+// Filtering via genre
 const genreFiltering = {
   name: "genre",
   value: "0",
   condition: genreFilter,
 };
 
+// Home page -> currently using the discovery query though this may change once tv is added etc
 const HomePage: React.FC = () => {
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("discover", getMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering]
   );
 
+  // Loading spinner
   if (isLoading) {
     return <Spinner />;
   }
 
+  // Error message display
   if (isError) {
     return <h1>{error.message}</h1>;
   }
@@ -49,7 +53,7 @@ const HomePage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  // Desctructuring the data
+  // Desctructuring the data from the api call
   const movies = data ? data.results : [];
 
   // Setting the displayed movies as the result of the filter function
