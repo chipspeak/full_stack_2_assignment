@@ -2,11 +2,9 @@ import React, { ChangeEvent } from "react";
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { FilterOption, GenreData } from "../../types/interfaces"; // Include GenreData interface
@@ -28,6 +26,7 @@ const styles = {
     minWidth: 220,
     color: "white",
     backgroundColor: "#1a1a1a",
+    border: '1px solid white',
     '& .MuiInputLabel-root': {
       color: "white",
     },
@@ -89,22 +88,20 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
     <>
       <Card sx={styles.root} variant="outlined">
         <CardContent>
-          <Typography variant="h5" component="h1">
-            <FilterAltIcon fontSize="large" />
-            Filter the movies.
-          </Typography>
+
+          <InputLabel id="filled-search" sx={{ color: "white", paddingLeft: "10px" }}>Search</InputLabel>
           <TextField
             sx={styles.formControl}
             id="filled-search"
-            label="Search field"
+            label="Title"
             type="search"
             value={titleFilter}
             variant="filled"
             onChange={handleTextChange}
             InputLabelProps={{ style: { color: 'white' } }}
           />
+          <InputLabel id="genre-label" sx={{ color: "white", paddingLeft: "10px" }}>Genre</InputLabel>
           <FormControl sx={styles.formControl}>
-            <InputLabel id="genre-label" sx={{ color: "white" }}>Genre</InputLabel>
             <Select
               labelId="genre-label"
               id="genre-select"

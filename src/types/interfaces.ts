@@ -18,6 +18,7 @@ export interface BaseMovieProps {
     favourite?: boolean;
     playlist?: boolean;
     genre_ids?: number[];
+    cast?: MovieCastMember[];
   }
 
   export interface MovieListPageTemplateProps extends BaseMovieListProps {

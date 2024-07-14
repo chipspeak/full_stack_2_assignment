@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import FilterCard from "../filterMoviesCard";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
+import Box from "@mui/material/Box";
 import { BaseMovieProps } from "../../types/interfaces";
 
 // Filter functions for the movie list by title and genre
@@ -19,18 +20,24 @@ export const genreFilter = (movie: BaseMovieProps, value: string) => {
 // Styles for the filter drawer and the filter button
 const styles = {
   root: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: "#1a1a1a",
   },
   drawer: {
-    backgroundColor: '#1a1a1a',
-    color: 'white',
+    backgroundColor: "#1a1a1a",
+    color: "white",
+  },
+  fabContainer: {
+    position: "fixed",
+    top: 75,
+    left: 30, // Adjusted to move the Fab button to the left
   },
   fab: {
-    marginTop: 8,
-    position: "fixed",
-    top: 20,
-    right: 2,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: "white", 
+    color: "black", 
+    "&:hover": {
+      backgroundColor: "#666666", 
+      color: "white",
+    },
   },
 };
 
@@ -49,14 +56,16 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
 
   return (
     <>
-      <Fab
-        color="secondary"
-        variant="extended"
-        onClick={() => setDrawerOpen(true)}
-        sx={styles.fab}
-      >
-        Filter
-      </Fab>
+      <Box sx={styles.fabContainer}>
+        <Fab
+          color="primary"
+          variant="extended"
+          onClick={() => setDrawerOpen(true)}
+          sx={styles.fab}
+        >
+          Filter
+        </Fab>
+      </Box>
       <Drawer
         anchor="left"
         open={drawerOpen}
