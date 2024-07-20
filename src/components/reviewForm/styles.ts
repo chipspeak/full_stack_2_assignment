@@ -8,7 +8,7 @@ const styles =  {
     form: {
       width: "100%",
       color: "white",
-      backgroundColor: "rgba(255, 255, 255, 0.8)",
+      backgroundColor: "rgba(255, 255, 255, 0.8)"!,
       "& > * ": {
         marginTop: 2,
       },

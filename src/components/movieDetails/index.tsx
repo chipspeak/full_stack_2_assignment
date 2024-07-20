@@ -11,7 +11,7 @@ import { MovieDetailsProps } from "../../types/interfaces";
 import { Box } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
 
-// 
+// Styling for the movie details section
 const styles = {
   chipSet: {
     display: "flex",
@@ -24,10 +24,11 @@ const styles = {
   },
   chip: {
     color: "#ffffff",
-    backgroundColor: "transparent",
+    backgroundColor: "transparent", // Transparent background for the chip items
     margin: "0.5rem",
     border: "2px solid #ffffff",
   },
+  // Styling for the fab button for reviews
   fabContainer: {
     display: "flex",
     justifyContent: "center",
@@ -76,7 +77,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
         />
         <Chip
           icon={<MonetizationIcon />}
-          label={`${movie.revenue.toLocaleString()}`}
+          label={`$${movie.revenue.toLocaleString()}`}
           sx={styles.chip}
         />
         <Chip
