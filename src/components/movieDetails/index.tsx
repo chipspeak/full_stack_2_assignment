@@ -86,6 +86,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
           sx={styles.chip}
         />
         <Chip label={`Released: ${movie.release_date}`} sx={styles.chip} />
+        <Chip label={`Popularity: ${movie.popularity}`} sx={styles.chip} />
       </Box>
 
       <Box sx={styles.fabContainer}>
