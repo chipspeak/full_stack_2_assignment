@@ -8,6 +8,8 @@ const styles = {
     '& > * + *': {
       marginLeft: 2,
     },
+    minHeight: "100vh",
+    alignItems: "center",
   },
 };
 
