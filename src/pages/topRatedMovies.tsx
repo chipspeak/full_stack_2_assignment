@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import MovieListPageTemplate from "../components/templateMovieListPage";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import { BaseMovieProps } from "../types/interfaces";
@@ -28,6 +29,10 @@ const genreFiltering = {
 
 // Top Rated movies page
 const TopRatedMoviesPage: React.FC = () => {
+  // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("top", getTopMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering]

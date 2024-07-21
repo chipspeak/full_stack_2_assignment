@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Typography } from "@mui/material";
 import { useQuery } from "react-query";
-import { getMovieImages, getMovieVideos, getSimilarMovies } from "../../api/tmdb-api";
-import { MovieImage, MovieDetailsProps, BaseMovieProps } from "../../types/interfaces";
+import { getMovieImages, getMovieVideos, getSimilarMovies, getMovieWatchProviders } from "../../api/tmdb-api";
+import { MovieImage, MovieDetailsProps, BaseMovieProps, MovieWatchProvidersResponse } from "../../types/interfaces";
 import CastMembers from "../castMembers";
 import Spinner from "../spinner";
 import Box from "@mui/material/Box";
-import SimilarMovies from "../similarMovies"; 
-import AddToFavouritesIcon from "../cardIcons/addToFavourites"; 
+import SimilarMovies from "../similarMovies";
+import AddToFavouritesIcon from "../cardIcons/addToFavourites";
 
 const styles = {
   pageContainer: {
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
-    position: "relative", // Ensure the container is positioned relative to handle the content positioning
+    position: "relative",
   },
   contentContainer: {
     display: "flex",
@@ -21,20 +22,20 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     padding: "20px",
-    position: "relative", // Ensure this container has position relative
-    zIndex: 2, // Ensure content is above the backdrop
+    position: "relative",
+    zIndex: 2,
     backgroundSize: "cover",
     backgroundPosition: "center",
     width: "100%",
-    height: "100%", // Ensure the container takes full height if needed
+    height: "100%",
   },
   detailsContainer: {
-    backgroundColor: "rgba(0, 0, 0, 0.3)", // Setting it to slightly more opaque. I'm back and forth on this one
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
     borderRadius: "8px",
     padding: "20px",
     maxWidth: "80%",
     textAlign: "center",
-    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)", // Adding text shadow
+    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
   },
   trailerContainer: {
     width: "100%",
@@ -47,6 +48,14 @@ const styles = {
     width: "100%",
     padding: "20px",
   },
+  watchProvidersContainer: {
+    marginTop: "20px",
+    textAlign: "center",
+  },
+  providerLogo: {
+    width: "60px",
+    margin: "5px",
+  },
 };
 
 interface TemplateMoviePageProps {
@@ -55,7 +64,10 @@ interface TemplateMoviePageProps {
 }
 
 const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }) => {
-
+  // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   // Fetch movies and their respective images/backdrops
   const { data: imagesData, error: imagesError, isLoading: imagesLoading, isError: isImagesError } = useQuery<
     { posters: MovieImage[]; backdrops: MovieImage[] },
@@ -72,10 +84,16 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
   const { data: similarMoviesData, error: similarMoviesError, isLoading: similarMoviesLoading, isError: isSimilarMoviesError } = useQuery<
     { results: BaseMovieProps[] },
     Error
-  >(["similarMovies", movie.id], () => getSimilarMovies(movie.id));    
+  >(["similarMovies", movie.id], () => getSimilarMovies(movie.id));
+
+  // Fetch watch providers
+  const { data: watchProvidersData, error: watchProvidersError, isLoading: watchProvidersLoading, isError: isWatchProvidersError } = useQuery<
+    MovieWatchProvidersResponse,
+    Error
+  >(["watchProviders", movie.id], () => getMovieWatchProviders(movie.id));
 
   // Display a spinner while the data is loading
-  if (imagesLoading || videosLoading || similarMoviesLoading) {
+  if (imagesLoading || videosLoading || similarMoviesLoading || watchProvidersLoading) {
     return <Spinner />;
   }
 
@@ -84,15 +102,26 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
     return <h1>{imagesError.message}</h1>;
   }
 
+  // Display an error message if there was an erro fetching video
   if (isVideosError) {
     return <h1>{videosError.message}</h1>;
   }
 
+  // Display an error message if there was an error fetching similar movies
   if (isSimilarMoviesError) {
     return <h1>{similarMoviesError.message}</h1>;
   }
 
+  // Display an error message if there was an error fetching watch providers
+  if (isWatchProvidersError) {
+    return <h1>{watchProvidersError.message}</h1>;
+  }
+
+  // Extract the similar movies from the similarMoviesData object
   const similarMovies = similarMoviesData?.results || [];
+
+  // Extract and filter the watch providers for Ireland. TMDB returns different types of provider. Flatrate is streaming services i.e Netflix etc
+  const irelandProviders = watchProvidersData?.results?.IE?.flatrate || [];
 
   // Destructure the imagesData object to get the posters and backdrops (I'm not using posters due to the design of the page but am leaving it here)
   const { backdrops } = imagesData as {
@@ -136,16 +165,28 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
         )}
         <Box sx={styles.detailsContainer}>
           {children}
+          {irelandProviders.length > 0 && (
+            // Conditional to prevent display of availability text where no providers are returned
+            <Box sx={styles.watchProvidersContainer}>
+              <Box display="flex" flexWrap="wrap" justifyContent="center">
+                {irelandProviders.map((provider) => (
+                  <Box key={provider.provider_id} display="flex" justifyContent="center" alignItems="center" my={1} mx={1}>
+                    <img src={`https://image.tmdb.org/t/p/original${provider.logo_path}`} alt={provider.provider_name} style={styles.providerLogo} />
+                  </Box>
+                ))}
+              </Box>
+              <Typography variant="h6" component="h3">(Availability provided by JustWatch)</Typography>
+            </Box>
+          )}
         </Box>
         <CastMembers movieId={movie.id} />
       </Box>
-      <Box sx={styles.similarMoviesContainer} // Adding a conditional in case there are no similar movies listed
-      >
+      <Box sx={styles.similarMoviesContainer}>
         {similarMovies.length > 0 && (
-        <SimilarMovies 
-          movies={similarMovies} 
-          action={(movie: BaseMovieProps) => <AddToFavouritesIcon {...movie} />} 
-        />
+          <SimilarMovies
+            movies={similarMovies}
+            action={(movie: BaseMovieProps) => <AddToFavouritesIcon {...movie} />}
+          />
         )}
       </Box>
     </Box>

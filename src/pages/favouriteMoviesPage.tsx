@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import { useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
@@ -25,6 +26,10 @@ const genreFiltering = {
 };
 
 const FavouriteMoviesPage: React.FC = () => {
+    // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   const { favourites: movieIds } = useContext(MoviesContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering]

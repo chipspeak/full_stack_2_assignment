@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { BaseMovieProps } from "../types/interfaces";
 import { getUpcomingMovies, getMovies } from "../api/tmdb-api";
@@ -37,6 +38,10 @@ const filterOutDuplicates = (upcomingMovies: BaseMovieProps[], discoveredMovies:
 
 // Upcoming movies page -> basically the same as the home page but with upcoming movies
 const UpcomingMoviesPage: React.FC = () => {
+  // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { data: upcomingData, error: upcomingError, isLoading: upcomingIsLoading, isError: upcomingIsError } = useQuery<DiscoverMovies, Error>("upcoming", getUpcomingMovies);
   const { data: discoveredData, error: discoveredError, isLoading: discoveredIsLoading, isError: discoveredIsError } = useQuery<DiscoverMovies, Error>("discover", getMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(

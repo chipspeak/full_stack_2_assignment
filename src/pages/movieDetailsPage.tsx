@@ -1,4 +1,5 @@
 import React from "react"; // replace existing react import
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import MovieDetails from "../components/movieDetails";
 import TemplateMoviePage from "../components/templateMoviePage";
@@ -9,6 +10,10 @@ import { MovieDetailsProps } from "../types/interfaces";
 
 // MovieDetailsPage page. Most of this pages details are handlded within the component itself
 const MovieDetailsPage: React.FC= () => {
+  // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { id } = useParams();
   const { data: movie, error, isLoading, isError } = useQuery<MovieDetailsProps, Error>(
     ["movie", id],

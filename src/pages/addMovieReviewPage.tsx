@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import PageTemplate from "../components/templateMoviePage";
 import ReviewForm from "../components/reviewForm";
 import { useLocation } from "react-router-dom";
@@ -9,6 +10,10 @@ import Spinner from "../components/spinner";
 import { BaseMovieProps, MovieDetailsProps } from "../types/interfaces";
 
 const WriteReviewPage: React.FC = () => {
+    // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const location = useLocation()
     const { movieId } = location.state;
     const { data: movie, error, isLoading, isError } = useQuery<MovieDetailsProps, Error>(

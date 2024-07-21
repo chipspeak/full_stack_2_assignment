@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ActorDetails from "../components/actorDetails";
 import ActorCredits from "../components/actorCredits"; // Import the new component
@@ -10,6 +11,11 @@ import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 
 // The bulk of the material is handled by the ActorDetails component
 const ActorDetailsPage: React.FC = () => {
+  // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { id } = useParams();
 
   // Fetch actor details

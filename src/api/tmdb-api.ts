@@ -31,6 +31,14 @@ export const getMovies = () => {
     )
       .then(res => res.json())
   }
+
+  export const getMovieWatchProviders = (id: string | number) => {
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    )
+      .then(res => res.json())
+  };
+  
   
   export const getMovie = (id: string) => {
     return fetch(
