@@ -20,7 +20,6 @@ export interface BaseMovieProps {
     playlist?: boolean;
     genre_ids?: number[];
     cast?: MovieCastMember[];
-    watchProviders?: WatchProvider;
   }
 
   export interface MovieListPageTemplateProps extends BaseMovieListProps {
@@ -114,10 +113,10 @@ export interface BaseMovieProps {
   
   // This outlines the format of the availability types available from the response (flatrate is all we'll use for now but the others are included for potential future use)
   export interface RegionWatchProviders {
-    link: string;
-    flatrate?: WatchProvider[];
-    rent?: WatchProvider[];
-    buy?: WatchProvider[];
+    link: string; // This is the direct link to the tmdb movie page
+    flatrate?: WatchProvider[]; // This is the array of providers that offer the movie as part of a subscription
+    rent?: WatchProvider[]; // This is the array of providers that offer the movie as a rental
+    buy?: WatchProvider[]; // This is the array of providers that offer the movie for purchase
   }
   
   // This is the format of the response and the one we'll be using within our component

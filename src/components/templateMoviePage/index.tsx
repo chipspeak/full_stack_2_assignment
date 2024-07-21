@@ -46,7 +46,6 @@ const styles = {
   },
   similarMoviesContainer: {
     width: "100%",
-    padding: "20px",
   },
   watchProvidersContainer: {
     marginTop: "20px",

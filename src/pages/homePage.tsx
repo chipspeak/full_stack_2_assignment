@@ -1,14 +1,11 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MovieListPageTemplate from "../components/templateMovieListPage";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import { BaseMovieProps } from "../types/interfaces";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI, {
-  titleFilter,
-  genreFilter,
-} from "../components/movieFilterUI";
+import SortMoviesUI from "../components/sortMoviesUi";
+import MovieFilterUI, { titleFilter, genreFilter } from "../components/movieFilterUI";
 import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
@@ -27,12 +24,26 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
-// Home page -> currently using the discovery query though this may change once tv is added etc
+/* Sorting functions (These compare two movies and return a value based on the sort type which are in turn based on fields from the response)
+ Sort by Date
+*/
+const sortByDate = (a: BaseMovieProps, b: BaseMovieProps) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
+// Sort by Rating
+const sortByRating = (a: BaseMovieProps, b: BaseMovieProps) => b.vote_average - a.vote_average;
+// Sort by Popularity
+const sortByPopularity = (a: BaseMovieProps, b: BaseMovieProps) => b.popularity - a.popularity;
+// Sort by Earnings
+const sortByEarnings = (a: BaseMovieProps, b: BaseMovieProps) => b.revenue - a.revenue;
+
+// Home page component  
 const HomePage: React.FC = () => {
+  const [sortOption, setSortOption] = useState<string>("none");
   // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Fetch movies
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("discover", getMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering]
@@ -48,7 +59,7 @@ const HomePage: React.FC = () => {
     return <h1>{error.message}</h1>;
   }
 
-  // Same logic as in the other pages featuring filters
+  // Change filter values
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value: value };
     const updatedFilterSet =
@@ -58,19 +69,38 @@ const HomePage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  // Desctructuring the data from the api call
-  const movies = data ? data.results : [];
+  const changeSortOption = (sort: string) => {
+    setSortOption(sort);
+  };
 
-  // Setting the displayed movies as the result of the filter function
-  const displayedMovies = filterFunction(movies);
+  const movies = data ? data.results : [];
+  const filteredMovies = filterFunction(movies);
+
+  // Movie sorting is carried out by spreading the filtered movies into a new array and sorting them based on the sort option
+  const sortedMovies = [...filteredMovies].sort((a, b) => {
+    switch (sortOption) {
+      case "none":
+        return 0;
+      case "date":
+        return sortByDate(a, b);
+      case "rating":
+        return sortByRating(a, b);
+      case "popularity":
+        return sortByPopularity(a, b);
+      case "earnings":  
+        return sortByEarnings(a, b);
+      default:
+        return 0;
+    }
+  });
 
   return (
     <>
       <MovieListPageTemplate
         title="DISCOVER MOVIES"
-        movies={displayedMovies}
+        movies={sortedMovies}
         action={(movie: BaseMovieProps) => {
-          return <AddToFavouritesIcon {...movie} />
+          return <AddToFavouritesIcon {...movie} />;
         }}
       />
       <MovieFilterUI
@@ -78,7 +108,9 @@ const HomePage: React.FC = () => {
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
       />
+      <SortMoviesUI onSortChange={changeSortOption} />
     </>
   );
 };
+
 export default HomePage;

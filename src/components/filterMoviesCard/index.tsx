@@ -27,26 +27,6 @@ const styles = {
     color: "white",
     backgroundColor: "#1a1a1a",
     border: '1px solid white',
-    '& .MuiInputLabel-root': {
-      color: "white",
-    },
-    '& .MuiSelect-root': {
-      color: "white",
-    },
-    '& .MuiFilledInput-root': {
-      backgroundColor: "#1a1a1a",
-      color: "white",
-    },
-    '& .MuiFilledInput-input': {
-      color: "white",
-    },
-    '& .MuiMenuItem-root': {
-      color: "white",
-      backgroundColor: "#1a1a1a",
-    },
-    '& .MuiMenuItem-root:hover': {
-      backgroundColor: "#1a1a1a",
-    },
   },
 };
 
@@ -108,7 +88,12 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
               value={genreFilter}
               onChange={handleGenreChange}
               variant="filled"
-              sx={{ backgroundColor: "#1a1a1a", color: "white" }}
+              sx={{ 
+                backgroundColor: "#1a1a1a", color: "white",
+                "& .MuiSelect-icon": {
+                  color: "white",
+                },
+               }}
             >
               {genres.map((genre) => {
                 return (
