@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MovieListPageTemplate from "../components/templateMovieListPage";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import { Box } from "@mui/material";
 import { BaseMovieProps } from "../types/interfaces";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
@@ -9,6 +10,7 @@ import MovieFilterUI, { titleFilter, genreFilter } from "../components/movieFilt
 import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
+import Pagination from "@mui/material/Pagination"; // Importing pagination component
 
 // Filtering via title
 const titleFiltering = {
@@ -24,59 +26,52 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
-/* Sorting functions (These compare two movies and return a value based on the sort type which are in turn based on fields from the response)
- Sort by Date
-*/
+// Sorting functions
 const sortByDate = (a: BaseMovieProps, b: BaseMovieProps) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
-// Sort by Rating
 const sortByRating = (a: BaseMovieProps, b: BaseMovieProps) => b.vote_average - a.vote_average;
-// Sort by Popularity
 const sortByPopularity = (a: BaseMovieProps, b: BaseMovieProps) => b.popularity - a.popularity;
-// Sort by Earnings
 const sortByEarnings = (a: BaseMovieProps, b: BaseMovieProps) => b.revenue - a.revenue;
 
-// Home page component  
 const HomePage: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("none");
-  // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const PAGE_SIZE = 8; // Number of movies per page (tmdb seems to return about 20 results so breaking into 4s seemed best)
+
+  // Scroll to the top of the page when the component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   // Fetch movies
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("discover", getMovies);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering(
-    [titleFiltering, genreFiltering]
-  );
+  const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
 
-  // Loading spinner
   if (isLoading) {
     return <Spinner />;
   }
 
-  // Error message display
   if (isError) {
     return <h1>{error.message}</h1>;
   }
 
-  // Change filter values
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value: value };
-    const updatedFilterSet =
-      type === "title"
-        ? [changedFilter, filterValues[1]]
-        : [filterValues[0], changedFilter];
+    const updatedFilterSet = type === "title"
+      ? [changedFilter, filterValues[1]]
+      : [filterValues[0], changedFilter];
     setFilterValues(updatedFilterSet);
+    setCurrentPage(1); // Reset to first page when filters change (this aids user legibility as the first page will always be shown thus reflecting the results)
   };
 
   const changeSortOption = (sort: string) => {
     setSortOption(sort);
+    setCurrentPage(1); // Reset to first page when filters change (this aids user legibility as the first page will always be shown thus reflecting the results)
   };
 
   const movies = data ? data.results : [];
   const filteredMovies = filterFunction(movies);
 
-  // Movie sorting is carried out by spreading the filtered movies into a new array and sorting them based on the sort option
+  // Sort movies
   const sortedMovies = [...filteredMovies].sort((a, b) => {
     switch (sortOption) {
       case "none":
@@ -87,18 +82,30 @@ const HomePage: React.FC = () => {
         return sortByRating(a, b);
       case "popularity":
         return sortByPopularity(a, b);
-      case "earnings":  
+      case "earnings":
         return sortByEarnings(a, b);
       default:
         return 0;
     }
   });
 
+  /* Calculate start index via current page (using minus 1 to account for 0 indexing) and multiplying by the page size
+  This gives us the current index of the movies array to start the page from
+  */
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  /* Using the sortedMovies array (which is already filtered and sorted) to extract the relevant movies for the current page
+  This is done by using the start index and adding the page size to it to get the end index and slicing the section outlined by these indices
+  */
+  const paginatedMovies = sortedMovies.slice(startIndex, startIndex + PAGE_SIZE);
+
+  // Calculate total pages by using the length of the sorted movies array divided by the page size
+  const totalPages = Math.ceil(sortedMovies.length / PAGE_SIZE);
+
   return (
     <>
       <MovieListPageTemplate
         title="DISCOVER MOVIES"
-        movies={sortedMovies}
+        movies={paginatedMovies}
         action={(movie: BaseMovieProps) => {
           return <AddToFavouritesIcon {...movie} />;
         }}
@@ -109,6 +116,25 @@ const HomePage: React.FC = () => {
         genreFilter={filterValues[1].value}
       />
       <SortMoviesUI onSortChange={changeSortOption} />
+      {totalPages > 1 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={(event, value) => setCurrentPage(value)}
+            color="primary"
+            sx={{
+              '& .MuiPaginationItem-root': {
+                color: 'white', // Change page numbers to white
+              },
+              '& .MuiPaginationItem-ellipsis': {
+                color: 'white', // Change ellipsis to white
+              },
+            }}
+        />
+          </Box>
+      )}
+          
     </>
   );
 };

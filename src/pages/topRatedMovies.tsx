@@ -1,19 +1,16 @@
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import MovieListPageTemplate from "../components/templateMovieListPage";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import { BaseMovieProps } from "../types/interfaces";
 import { getTopMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import SortMoviesUI from "../components/sortMoviesUi";
-import MovieFilterUI, {
-  titleFilter,
-  genreFilter,
-} from "../components/movieFilterUI";
+import MovieFilterUI, { titleFilter, genreFilter } from "../components/movieFilterUI";
 import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
+import Pagination from "@mui/material/Pagination"; // Importing pagination component
 
 // Filtering via title
 const titleFiltering = {
@@ -43,14 +40,17 @@ const sortByEarnings = (a: BaseMovieProps, b: BaseMovieProps) => b.revenue - a.r
 // Top Rated movies page
 const TopRatedMoviesPage: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("none");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const PAGE_SIZE = 8; // Number of movies per page
+
   // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Fetch movies
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("top", getTopMovies);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering(
-    [titleFiltering, genreFiltering]
-  );
+  const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
 
   // Loading spinner
   if (isLoading) {
@@ -65,15 +65,16 @@ const TopRatedMoviesPage: React.FC = () => {
   // Same logic as in the other pages featuring filters
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value: value };
-    const updatedFilterSet =
-      type === "title"
-        ? [changedFilter, filterValues[1]]
-        : [filterValues[0], changedFilter];
+    const updatedFilterSet = type === "title"
+      ? [changedFilter, filterValues[1]]
+      : [filterValues[0], changedFilter];
     setFilterValues(updatedFilterSet);
+    setCurrentPage(1); // Reset to first page when filters change (this aids user legibility as the first page will always be shown thus reflecting the results)
   };
 
   const changeSortOption = (sort: string) => {
     setSortOption(sort);
+    setCurrentPage(1); // Reset to first page when filters change (this aids user legibility as the first page will always be shown thus reflecting the results)
   };
 
   // Destructuring the data from the API call
@@ -93,18 +94,30 @@ const TopRatedMoviesPage: React.FC = () => {
         return sortByRating(a, b);
       case "popularity":
         return sortByPopularity(a, b);
-      case "earnings":  
+      case "earnings":
         return sortByEarnings(a, b);
       default:
         return 0;
     }
   });
 
+  /* Calculate start index via current page (using minus 1 to account for 0 indexing) and multiplying by the page size
+  This gives us the current index of the movies array to start the page from
+  */
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  /* Using the sortedMovies array (which is already filtered and sorted) to extract the relevant movies for the current page
+  This is done by using the start index and adding the page size to it to get the end index and slicing the section outlined by these indices
+  */
+  const paginatedMovies = sortedMovies.slice(startIndex, startIndex + PAGE_SIZE);
+
+  // Calculate total pages by using the length of the sorted movies array divided by the page size
+  const totalPages = Math.ceil(sortedMovies.length / PAGE_SIZE);
+
   return (
     <>
       <MovieListPageTemplate
         title="TOP RATED MOVIES"
-        movies={sortedMovies}
+        movies={paginatedMovies}
         action={(movie: BaseMovieProps) => {
           return <AddToFavouritesIcon {...movie} />
         }}
@@ -115,7 +128,26 @@ const TopRatedMoviesPage: React.FC = () => {
         genreFilter={filterValues[1].value}
       />
       <SortMoviesUI onSortChange={changeSortOption} />
+      {totalPages > 1 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={(event, value) => setCurrentPage(value)}
+            color="primary"
+            sx={{
+              '& .MuiPaginationItem-root': {
+                color: 'white', // Change page numbers to white
+              },
+              '& .MuiPaginationItem-ellipsis': {
+                color: 'white', // Change ellipsis to white
+              },
+            }}
+          />
+        </Box>
+      )}
     </>
   );
 };
+
 export default TopRatedMoviesPage;
