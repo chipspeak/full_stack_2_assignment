@@ -158,9 +158,17 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
     backgroundImage: backdropUrl,
   };
 
-  // Function to generate a JustWatch URL for the movie (the movie title format needs to have - instead of whitespcae hence the replace)
+  /*
+  Function to generate a JustWatch URL for the movie (the movie title format needs to have - instead of whitespcae hence the replace)
+  This also removes any commas or apostrophes that might cause issues with the url (example: Schindler's List)
+  No need to convert case as justwatch seems to handle that itself
+  */
   const generateJustWatchUrl = (title: string) => {
-    const formattedTitle = title.toLowerCase().replace(/\s+/g, "-");
+    const formattedTitle = title
+      // Replace spaces and specific special characters with a hyphen
+      .replace(/[^\w\s-]/g, "") // Remove commas, periods, and other special characters
+      .replace(/\s+/g, "-");    // Replace spaces with hyphens
+    
     return `https://www.justwatch.com/ie/movie/${formattedTitle}`;
   };
 
