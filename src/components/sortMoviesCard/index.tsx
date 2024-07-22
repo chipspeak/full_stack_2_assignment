@@ -58,7 +58,6 @@ const SortMoviesCard: React.FC<SortMoviesCardProps> = ({ onSortChange, sortOptio
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="rating">Rating</MenuItem>
             <MenuItem value="popularity">Popularity</MenuItem>
-            <MenuItem value="earnings">Earnings</MenuItem>
           </Select>
         </FormControl>
       </CardContent>

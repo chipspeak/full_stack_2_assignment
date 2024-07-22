@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import { getMovieImages, getMovieVideos, getSimilarMovies, getMovieWatchProviders } from "../../api/tmdb-api";
 import { MovieImage, MovieDetailsProps, BaseMovieProps, MovieWatchProvidersResponse } from "../../types/interfaces";
@@ -8,6 +7,14 @@ import Spinner from "../spinner";
 import Box from "@mui/material/Box";
 import SimilarMovies from "../similarMovies";
 import AddToFavouritesIcon from "../cardIcons/addToFavourites";
+import JustWatchLogo from "../../images/justwatch-logo.png";
+
+/*
+A note on JustWatch, I've attempted to sign up to use their widget but I don't think it's possible
+In lieu of that, I've added a link to the JustWatch page for the movie via a png of their logo
+I'm generating this url based on their url structure (i.e hyphens instead of whitespace)
+As far as I can tell, there's no way to get a direct link to the movie streaming page from the TMDB api so this will have to do
+*/
 
 const styles = {
   pageContainer: {
@@ -55,8 +62,13 @@ const styles = {
     width: "60px",
     margin: "5px",
   },
+  justWatchLogo: {
+    width: "140px",
+    marginTop: "5px",
+  },
 };
 
+// Template for the movie page
 interface TemplateMoviePageProps {
   movie: MovieDetailsProps;
   children: React.ReactElement;
@@ -67,6 +79,7 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   // Fetch movies and their respective images/backdrops
   const { data: imagesData, error: imagesError, isLoading: imagesLoading, isError: isImagesError } = useQuery<
     { posters: MovieImage[]; backdrops: MovieImage[] },
@@ -145,6 +158,12 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
     backgroundImage: backdropUrl,
   };
 
+  // Function to generate a JustWatch URL for the movie (the movie title format needs to have - instead of whitespcae hence the replace)
+  const generateJustWatchUrl = (title: string) => {
+    const formattedTitle = title.toLowerCase().replace(/\s+/g, "-");
+    return `https://www.justwatch.com/ie/movie/${formattedTitle}`;
+  };
+
   // Return the page container with the trailer, movie details, and cast members
   return (
     <Box sx={styles.pageContainer}>
@@ -174,7 +193,10 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
                   </Box>
                 ))}
               </Box>
-              <Typography variant="h6" component="h3">(Availability provided by JustWatch)</Typography>
+              <a href={generateJustWatchUrl(movie.title)} target="_blank" // Specifying the link to be opened in a new tab
+              >
+                <img src={JustWatchLogo} alt="JustWatch" style={styles.justWatchLogo} />
+              </a>
             </Box>
           )}
         </Box>

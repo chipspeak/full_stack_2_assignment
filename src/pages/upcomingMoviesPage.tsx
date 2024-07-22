@@ -42,7 +42,6 @@ const filterOutDuplicates = (upcomingMovies: BaseMovieProps[], discoveredMovies:
 const sortByDate = (a: BaseMovieProps, b: BaseMovieProps) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
 const sortByRating = (a: BaseMovieProps, b: BaseMovieProps) => b.vote_average - a.vote_average;
 const sortByPopularity = (a: BaseMovieProps, b: BaseMovieProps) => b.popularity - a.popularity;
-const sortByEarnings = (a: BaseMovieProps, b: BaseMovieProps) => b.revenue - a.revenue;
 
 // Upcoming movies page -> basically the same as the home page but with upcoming movies
 const UpcomingMoviesPage: React.FC = () => {
@@ -107,8 +106,6 @@ const UpcomingMoviesPage: React.FC = () => {
         return sortByRating(a, b);
       case "popularity":
         return sortByPopularity(a, b);
-      case "earnings":
-        return sortByEarnings(a, b);
       default:
         return 0;
     }

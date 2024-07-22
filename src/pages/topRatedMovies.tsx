@@ -34,8 +34,6 @@ const sortByDate = (a: BaseMovieProps, b: BaseMovieProps) => new Date(b.release_
 const sortByRating = (a: BaseMovieProps, b: BaseMovieProps) => b.vote_average - a.vote_average;
 // Sort by Popularity
 const sortByPopularity = (a: BaseMovieProps, b: BaseMovieProps) => b.popularity - a.popularity;
-// Sort by Earnings
-const sortByEarnings = (a: BaseMovieProps, b: BaseMovieProps) => b.revenue - a.revenue;
 
 // Top Rated movies page
 const TopRatedMoviesPage: React.FC = () => {
@@ -94,8 +92,6 @@ const TopRatedMoviesPage: React.FC = () => {
         return sortByRating(a, b);
       case "popularity":
         return sortByPopularity(a, b);
-      case "earnings":
-        return sortByEarnings(a, b);
       default:
         return 0;
     }
