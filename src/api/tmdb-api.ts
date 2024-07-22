@@ -166,3 +166,114 @@ export const getMovies = () => {
         throw error;
       });
   }
+
+  // Tv section
+
+  // API calls for TV shows
+
+export const getTvShows = () => {
+  return fetch(
+    `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
+  ).then((response) => {
+    if (!response.ok)
+      throw new Error(`Unable to fetch TV shows. Response status: ${response.status}`);
+    return response.json();
+  })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getTvShow = (id: string) => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Failed to get TV show data. Response status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .catch((error) => {
+    throw error;
+  });
+};
+
+export const getTvShowCast = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${id}/aggregate_credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch TV show cast data");
+      }
+      return response.json();
+    })
+    .then((json) => {
+      const cast = json.cast || [];
+      return { cast }; // Return an object with the cast array
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getSimilarTvShows = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  )
+    .then((res) => res.json())
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getTvShowWatchProviders = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${id}/watch/providers?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then((res) => res.json())
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getTvShowImages = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch images");
+      }
+      return response.json();
+    })
+    .then((json) => {
+      const posters = json.posters || [];
+      const backdrops = json.backdrops || [];
+      return { posters, backdrops };
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getTvShowVideos = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch videos");
+      }
+      return response.json();
+    })
+    .then((json) => {
+      const results = json.results || [];
+      return { results };
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+

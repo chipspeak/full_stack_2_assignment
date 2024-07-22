@@ -42,6 +42,8 @@ const SiteHeader: React.FC = () => {
     { label: "Must Watch", path: "/movies/playlist" },
     { label: "Upcoming", path: "/upcoming" },
     { label: "Top Rated", path: "/top" },
+    { label: "TV Shows", path: "/tv" },
+    { label: "TV Favorites", path: "/tvshows/favourites" },
   ];
 
   // Handle opening the hamburger menu

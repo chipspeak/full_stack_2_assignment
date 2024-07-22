@@ -12,6 +12,7 @@ import MovieFilterUI, {
   titleFilter,
   genreFilter,
 } from "../components/movieFilterUI";
+import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 
 // Same filtering as on the main page
 const titleFiltering = {
@@ -76,7 +77,7 @@ const FavouriteMoviesPage: React.FC = () => {
         action={(movie) => {
           return (
             <>
-              <RemoveFromFavourites {...movie} />
+              <AddToFavouritesIcon {...movie} />
               <WriteReview {...movie} />
             </>
           );

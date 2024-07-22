@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import Chip from "@mui/material/Chip";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import MonetizationIcon from "@mui/icons-material/MonetizationOn";
-import StarRateIcon from "@mui/icons-material/StarRate";
+import ListIcon from "@mui/icons-material/List";
+import LayersIcon from "@mui/icons-material/Layers";
 import Typography from "@mui/material/Typography";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
-import MovieReviews from "../movieReviews";
-import { MovieDetailsProps } from "../../types/interfaces";
+import { TvShowDetailsProps } from "../../types/interfaces";
 import { Box } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
 
-// Styling for the movie details section
+// Styling for the TV show details section
 const styles = {
   chipSet: {
     display: "flex",
@@ -43,8 +41,8 @@ const styles = {
       backgroundColor: "white",
       color: "black",
     },
-    width: "auto", 
-    height: "auto", 
+    width: "auto",
+    height: "auto",
     padding: "0.5rem 1rem",
   },
   overviewText: {
@@ -53,41 +51,36 @@ const styles = {
   },
 };
 
-const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
+const TVShowDetails: React.FC<TvShowDetailsProps> = (tvShow) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <>
       <Typography variant="h5" component="h3" sx={styles.overviewText}>
-        {movie.tagline}
+        {tvShow.tagline}
       </Typography>
       <Typography variant="h6" component="p" sx={styles.overviewText}>
-        {movie.overview}
+        {tvShow.overview}
       </Typography>
 
       <Box sx={styles.chipSet}>
-        {movie.genres.map((g) => (
+        {tvShow.genres.map((g) => (
           <Chip key={g.name} label={g.name} sx={styles.chip} />
         ))}
       </Box>
       <Box sx={styles.chipSet}>
         <Chip
-          icon={<AccessTimeIcon />}
-          label={`${movie.runtime} min.`}
+          icon={<ListIcon />}
+          label={`${tvShow.number_of_episodes} episodes`}
           sx={styles.chip}
         />
         <Chip
-          icon={<MonetizationIcon />}
-          label={`$${movie.revenue.toLocaleString()}`}
+          icon={<LayersIcon />}
+          label={`${tvShow.number_of_seasons} seasons`}
           sx={styles.chip}
         />
-        <Chip
-          icon={<StarRateIcon />}
-          label={`${movie.vote_average} (${movie.vote_count})`}
-          sx={styles.chip}
-        />
-        <Chip label={`Released: ${movie.release_date}`} sx={styles.chip} />
-        <Chip label={`Popularity: ${movie.popularity}`} sx={styles.chip} />
+        <Chip label={`First Air Date: ${tvShow.first_air_date}`} sx={styles.chip} />
+        <Chip label={`Popularity: ${tvShow.popularity}`} sx={styles.chip} />
       </Box>
 
       <Box sx={styles.fabContainer}>
@@ -101,12 +94,8 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
           Reviews
         </Fab>
       </Box>
-
-      <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <MovieReviews {...movie} />
-      </Drawer>
     </>
   );
 };
 
-export default MovieDetails;
+export default TVShowDetails;

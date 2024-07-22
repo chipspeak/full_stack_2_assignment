@@ -9,17 +9,18 @@ import TopRatedMoviesPage from "./pages/topRatedMovies";
 import SiteHeader from "./components/siteHeader";
 import UpcomingMoviePage from "./pages/upcomingMoviesPage";
 import MoviesContextProvider from "./contexts/moviesContext";
+import TvShowsContextProvider from "./contexts/tvContext";
 import AddMovieReviewPage from './pages/addMovieReviewPage';
 import ActorPage from './pages/actorDetailsPage';
+import TV from "./pages/tvPage"; // New TV Show List Page
+import TvDetailsPage from "./pages/tvDetailsPage"; // New TV Show Details Page
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MustWatchPage from "./pages/mustWatchPage";
+import FavouriteTvShowsPage from "./pages/favouriteTvShowsPage";
 
-
-// Apply global styles to the body element
 document.body.style.backgroundColor = '#1a1a1a'; // Very dark grey/black
 document.body.style.color = 'white'; // Text color
-
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,7 +38,9 @@ const App = () => {
       <BrowserRouter>
         <SiteHeader /> {/* New Header  */}
         <MoviesContextProvider>
+        <TvShowsContextProvider>
           <Routes>
+            {/* Movie Routes */}
             <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
             <Route path="/movies/playlist" element={<MustWatchPage />} />
             <Route path="/movies/:id" element={<MoviePage />} />
@@ -45,10 +48,18 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/top" element={<TopRatedMoviesPage />} />
             <Route path="/upcoming" element={<UpcomingMoviePage />} />
-            <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
+            <Route path="/reviews/form" element={<AddMovieReviewPage />} />
             <Route path="/actors/:id" element={<ActorPage />} />
+
+            {/* TV Show Routes */}
+            <Route path="/tv" element={<TV/>} /> {/* TV Show List Page */}
+            <Route path="/tvshows/favourites" element={<FavouriteTvShowsPage />} /> {/* TV Show Favourites Page */}
+            <Route path="/tvshows/:id" element={<TvDetailsPage />} /> {/* TV Show Details Page */}
+
+            {/* Redirect any unknown routes to home */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
+          </TvShowsContextProvider>
         </MoviesContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />

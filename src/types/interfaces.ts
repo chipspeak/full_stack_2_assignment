@@ -142,4 +142,92 @@ export interface BaseMovieProps {
     also_known_as?: string[];
   }
   
-  
+// Tv section
+
+// Type definitions for the application (TV show related)
+export interface BaseTvShowProps {
+  name: string;
+  id: number;
+  original_language: string;
+  overview: string;
+  first_air_date: string;
+  vote_average: number;
+  popularity: number;
+  poster_path?: string;
+  backdrop_path?: string;
+  genre_ids?: number[];
+  favourite?: boolean;
+  playlist?: boolean;
+  cast?: TvShowCastMember[];
+}
+
+export interface TvShowDetailsProps extends BaseTvShowProps {
+  genres: {
+    id: number;
+    name: string;
+  }[];
+  production_countries: {
+    iso_3166_1: string;
+    name: string;
+  }[];
+  number_of_seasons: number;
+  number_of_episodes: number;
+  tagline: string;
+}
+
+export interface DiscoverTvShows {
+  page: number;
+  total_pages: number;
+  total_results: number;
+  results: BaseTvShowProps[];
+}
+
+export interface TvShowCastMember {
+  id: number;
+  name: string;
+  profile_path?: string;
+}
+
+export interface BaseTvShowListProps {
+  tvShows: BaseTvShowProps[];
+  action: (tvShow: BaseTvShowProps) => React.ReactNode;
+}
+
+export interface TVShowListPageTemplateProps extends BaseTvShowListProps {
+  title: string;
+}
+
+export interface TVShowsContextType {
+  favourites: number[];
+  playlists: number[];
+  addToFavourites: (id: number) => void;
+  addToPlaylists: (id: number) => void;
+}
+
+// This outlines the format of the availability types available from the response (flatrate is all we'll use for now but the others are included for potential future use)
+export interface TvShowRegionWatchProviders {
+  link: string; // This is the direct link to the tmdb TV show page
+  flatrate?: WatchProvider[]; // This is the array of providers that offer the TV show as part of a subscription
+  rent?: WatchProvider[]; // This is the array of providers that offer the TV show as a rental
+  buy?: WatchProvider[]; // This is the array of providers that offer the TV show for purchase
+}
+
+// This is the format of the response and the one we'll be using within our component
+export interface TvShowWatchProvidersResponse {
+  id: number;
+  results: {
+    IE?: TvShowRegionWatchProviders;
+    GB?: TvShowRegionWatchProviders;
+    [key: string]: TvShowRegionWatchProviders | undefined;
+  };
+}
+
+export interface TvImage {
+  file_path: string;
+  aspect_ratio?: number;
+  height?: number;
+  iso_639_1?: string;
+  vote_average?: number;
+  vote_count?: number;
+  width?: number;
+}
