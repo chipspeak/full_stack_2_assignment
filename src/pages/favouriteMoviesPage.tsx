@@ -75,9 +75,9 @@ const FavouriteMoviesPage = () => {
 
   // Calculate start index for pagination
   const startIndex = (currentPage - 1) * PAGE_SIZE;
-  // Get paginated movies
+  // Get paginated movies based on start index and page size
   const paginatedMovies = sortedMovies.slice(startIndex, startIndex + PAGE_SIZE);
-  // Calculate total pages
+  // Calculate total pages based on total movies and page size
   const totalPages = Math.ceil(sortedMovies.length / PAGE_SIZE);
 
   const changeSortOption = (sort: React.SetStateAction<string>) => {

@@ -231,3 +231,12 @@ export interface TvImage {
   vote_count?: number;
   width?: number;
 }
+
+
+// Auth 
+
+export interface AuthContextInterface {
+  token: string | null;
+  authenticate: ((username: string, password: string) => void);
+  signout: () => void;
+}
