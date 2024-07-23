@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import PageTemplate from "../components/templateMovieListPage";
-import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
+import MovieListPageTemplate from "../components/templateMovieListPage";
 import WriteReview from "../components/cardIcons/writeReview";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import { MoviesContext } from "../contexts/moviesContext";
@@ -8,22 +7,9 @@ import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI, { titleFilter, genreFilter } from "../components/movieFilterUI";
 import SortMoviesUI from "../components/sortMoviesUi";
 import { Box } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
-
-// Same filtering as on the main page
-const titleFiltering = {
-  name: "title",
-  value: "",
-  condition: titleFilter,
-};
-const genreFiltering = {
-  name: "genre",
-  value: "0",
-  condition: genreFilter,
-};
 
 // Sorting functions
 const sortByDate = (a: { release_date: string | number | Date }, b: { release_date: string | number | Date }) =>
@@ -42,7 +28,6 @@ const FavouriteMoviesPage = () => {
   }, []);
 
   const { favourites: movieIds } = useContext(MoviesContext);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
 
   // Create an array of queries and run them in parallel.
   const favouriteMovieQueries = useQueries(
@@ -70,13 +55,10 @@ const FavouriteMoviesPage = () => {
     console.log("Movie Title:", movie.title, "Genres:", movie.genres);
   });
 
-  const filteredMovies = filterFunction(allFavourites);
 
-  // Additional Debugging: Log the filtered movies
-  console.log("Filtered Movies:", filteredMovies);
 
   // Sort movies
-  const sortedMovies = [...filteredMovies].sort((a, b) => {
+  const sortedMovies = [...allFavourites].sort((a, b) => {
     switch (sortOption) {
       case "none":
         return 0;
@@ -98,24 +80,15 @@ const FavouriteMoviesPage = () => {
   // Calculate total pages
   const totalPages = Math.ceil(sortedMovies.length / PAGE_SIZE);
 
-  const changeFilterValues = (type: string, value: string) => {
-    const changedFilter = { name: type, value: value };
-    const updatedFilterSet = type === "title" ? [changedFilter, filterValues[1]] : [filterValues[0], changedFilter];
-    setFilterValues(updatedFilterSet);
-    setCurrentPage(1); // Reset to first page when filters change
-  };
-
   const changeSortOption = (sort: React.SetStateAction<string>) => {
     setSortOption(sort);
     setCurrentPage(1); // Reset to first page when sorting changes
   };
 
-  console.log("Filter: ", filterValues);
-
   return (
     <>
-      <PageTemplate
-        title="FAVOURITES"
+      <MovieListPageTemplate
+        title="MOVIE FAVOURITES"
         movies={paginatedMovies}
         action={(movie) => {
           return (
