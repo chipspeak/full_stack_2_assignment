@@ -7,8 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { FilterOption, GenreData } from "../../types/interfaces"; // Ensure GenreData interface is correctly defined
-import { getGenres } from "../../api/tmdb-api";
+import { FilterOption, GenreData } from "../../types/interfaces"; 
+import { getTvGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from '../spinner';
 
@@ -36,7 +36,7 @@ interface FilterTvShowsCardProps {
 }
 
 const FilterTvCard: React.FC<FilterTvShowsCardProps> = ({ titleFilter, genreFilter, onUserInput }) => {
-  const { data, error, isLoading, isError } = useQuery<GenreData, Error>("genres", getGenres);
+  const { data, error, isLoading, isError } = useQuery<GenreData, Error>("genres", getTvGenres);
 
   if (isLoading) {
     return <Spinner />;
@@ -50,6 +50,7 @@ const FilterTvCard: React.FC<FilterTvShowsCardProps> = ({ titleFilter, genreFilt
     genres.unshift({ id: "0", name: "All" });
   }
 
+  console.log("Genres: ", genres);
   const handleChange = (e: SelectChangeEvent, type: FilterOption, value: string) => {
     e.preventDefault();
     onUserInput(type, value);

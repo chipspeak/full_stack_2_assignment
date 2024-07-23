@@ -27,7 +27,7 @@ export const getMovies = () => {
 
   export const getSimilarMovies = (id: string | number) => {
     return fetch(
-      `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+      `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1&include_adult=false&page=1`
     )
       .then(res => res.json())
   }
@@ -169,8 +169,6 @@ export const getMovies = () => {
 
   // Tv section
 
-  // API calls for TV shows
-
 export const getTvShows = () => {
   return fetch(
     `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
@@ -219,7 +217,7 @@ export const getTvShowCast = (id: string | number) => {
 
 export const getSimilarTvShows = (id: string | number) => {
   return fetch(
-    `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1&include_adult=false&page=1`
   )
     .then((res) => res.json())
     .catch((error) => {
@@ -274,6 +272,19 @@ export const getTvShowVideos = (id: string | number) => {
     .catch((error) => {
       throw error;
     });
+};
+
+export const getTvGenres = () => {
+  return fetch(
+    "https://api.themoviedb.org/3/genre/tv/list?api_key=" + import.meta.env.VITE_TMDB_KEY + "&language=en-US"
+  ).then( (response) => {
+    if (!response.ok)
+      throw new Error(`Unable to fetch genres. Response status: ${response.status}`);
+    return response.json();
+  })
+  .catch((error) => {
+    throw error
+ });
 };
 
 

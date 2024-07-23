@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import PageTemplate from "../components/templateTvShowListPage"; // Assuming a similar template exists for TV shows
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites"; // You might need a similar component for TV shows
 import WriteReview from "../components/cardIcons/writeReview"; // Ensure this is compatible with TV shows
+import { BaseTvShowProps } from "../types/interfaces"; // Ensure this is the correct interface for TV shows
 import { TvShowsContext } from "../contexts/tvContext";
 import { useQueries } from "react-query";
 import { getTvShow } from "../api/tmdb-api"; // Ensure this is the correct API function for TV shows
@@ -66,6 +67,11 @@ const FavouriteTvShowsPage: React.FC = () => {
       type === "title" ? [changedFilter, filterValues[1]] : [filterValues[0], changedFilter];
     setFilterValues(updatedFilterSet);
   };
+
+  // Sorting functions
+  const sortByDate = (a: BaseTvShowProps, b: BaseTvShowProps) => new Date(b.first_air_date).getTime() - new Date(a.first_air_date).getTime();
+  const sortByRating = (a: BaseTvShowProps, b: BaseTvShowProps) => b.vote_average - a.vote_average;
+  const sortByPopularity = (a: BaseTvShowProps, b: BaseTvShowProps) => b.popularity - a.popularity;
 
   return (
     <>

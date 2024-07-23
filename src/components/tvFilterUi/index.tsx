@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import FilterCard from "../filterMoviesCard"; // Assuming this is a generic filter component
+import FilterTvCard from "../filterTvCard"; 
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
-import { BaseTvShowProps } from "../../types/interfaces"; // Make sure this interface is correctly defined
+import { BaseTvShowProps } from "../../types/interfaces"; 
 
 const styles = {
   root: {
@@ -63,7 +63,7 @@ interface TvShowFilterUIProps {
   genreFilter: string;
 }
 
-const TvShowFilterUI: React.FC<TvShowFilterUIProps> = ({
+const TvFilterUi: React.FC<TvShowFilterUIProps> = ({
   onFilterValuesChange,
   titleFilter,
   genreFilter,
@@ -90,7 +90,7 @@ const TvShowFilterUI: React.FC<TvShowFilterUIProps> = ({
           sx: styles.drawer,
         }}
       >
-        <FilterCard
+        <FilterTvCard
           onUserInput={onFilterValuesChange}
           titleFilter={titleFilter}
           genreFilter={genreFilter}
@@ -100,4 +100,4 @@ const TvShowFilterUI: React.FC<TvShowFilterUIProps> = ({
   );
 };
 
-export default TvShowFilterUI;
+export default TvFilterUi;
