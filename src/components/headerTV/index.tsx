@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { TVShowsContext } from "../../contexts/tvContext";
+import { TvShowsContext } from "../../contexts/tvContext";
 import { Avatar } from "@mui/material";
 import { TvShowDetailsProps } from "../../types/interfaces"; 
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -25,13 +25,13 @@ const styles = {
 const TVShowHeader: React.FC<TvShowDetailsProps> = (tvShow) => {
   
   // favourites
-  const { favourites } = useContext(TVShowsContext);
+  const { favourites } = useContext(TvShowsContext);
   let favourite = tvShow.favourite;
   if (favourites.find((id: number) => id === tvShow.id)) 
     favourite = true;
 
-  // playlists
-  const { playlists } = useContext(TVShowsContext);
+  // playlists (doesn't exist yet as I may entirely scrap this feature from movies)
+  const { playlists } = useContext(TvShowsContext);
   let playlist = tvShow.playlist;
   if (playlists.find((id: number) => id === tvShow.id)) 
     playlist = true;
