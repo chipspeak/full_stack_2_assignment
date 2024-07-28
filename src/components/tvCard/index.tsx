@@ -6,11 +6,11 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
 import img from "../../images/film-poster-placeholder.png";
-import { BaseTvShowProps } from "../../types/interfaces"; // Adjust the import path if necessary
+import { BaseTvShowProps } from "../../types/interfaces"; 
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/authContext";
 
 const styles = {
   card: {
@@ -62,17 +62,20 @@ interface TVShowCardProps {
 
 // TV show card component
 const TVShowCard: React.FC<TVShowCardProps> = ({ tvShow, action }) => {
-
+  const authContext = useContext(AuthContext);
+  const isLoggedIn = !!authContext?.token;
   return (
     <Card sx={styles.card}>
-      <CardMedia
-        sx={styles.media}
-        image={
-          tvShow.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${tvShow.poster_path}`
-            : img
-        }
-      />
+      <Link to={`/tvshows/${tvShow.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <CardMedia
+          sx={styles.media}
+          image={
+            tvShow.poster_path
+              ? `https://image.tmdb.org/t/p/w500/${tvShow.poster_path}`
+              : img
+          }
+        />
+      </Link>
       <Box sx={styles.overlay}>
         <Typography variant="h6">{tvShow.name}</Typography>
         <Grid container justifyContent="center" alignItems="center" spacing={1}>
@@ -91,16 +94,14 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ tvShow, action }) => {
             />
           </Grid>
           <Grid item>
-            {action(tvShow)}
-          </Grid>
-          <Grid item>
-            <Link to={`/tvshows/${tvShow.id}`}>
-              <IconButton sx={styles.iconButton}>
-                <Button variant="outlined" size="small" color="primary">
-                  More Info
-                </Button>
-              </IconButton>
-            </Link>
+          {isLoggedIn && action && (
+              /* Stop click event propagation to prevent card click event 
+              (this means we can independantly select a favourite without triggering the page change)
+              */
+              <Box onClick={(e) => e.stopPropagation()}>
+                {action(tvShow)}
+              </Box>
+            )}
           </Grid>
         </Grid>
       </Box>

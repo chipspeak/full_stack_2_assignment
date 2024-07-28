@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import Header from "../headerTvShowList"; // Adjust the import path if necessary
+import Header from "../headerTvShowList";
 import Grid from "@mui/material/Grid";
-import TVShowList from "../tvList"; // Adjust the import path if necessary
-import { TVShowListPageTemplateProps } from "../../types/interfaces"; // Adjust the import path if necessary
+import TVShowList from "../tvList";
+import { TVShowListPageTemplateProps } from "../../types/interfaces";
 
 // Styling for the TV show list page
 const styles = {

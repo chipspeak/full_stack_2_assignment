@@ -9,8 +9,8 @@ import img from "../../images/film-poster-placeholder.png";
 import { BaseMovieProps } from "../../types/interfaces";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/authContext";
 
 const styles = {
   card: {
@@ -57,22 +57,26 @@ const styles = {
 
 interface MovieCardProps {
   movie: BaseMovieProps;
-  action: (m: BaseMovieProps) => React.ReactNode;
+  action?: (m: BaseMovieProps) => React.ReactNode;
 }
 
 // Movie card component
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
+  const authContext = useContext(AuthContext);
+  const isLoggedIn = !!authContext?.token;
 
   return (
     <Card sx={styles.card}>
-      <CardMedia
-        sx={styles.media}
-        image={
-          movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-            : img
-        }
-      />
+      <Link to={`/movies/${movie.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <CardMedia
+          sx={styles.media}
+          image={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+              : img
+          }
+        />
+      </Link>
       <Box sx={styles.overlay}>
         <Typography variant="h6">{movie.title}</Typography>
         <Grid container justifyContent="center" alignItems="center" spacing={1}>
@@ -91,16 +95,14 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
             />
           </Grid>
           <Grid item>
-            {action(movie)}
-          </Grid>
-          <Grid item>
-            <Link to={`/movies/${movie.id}`}>
-              <IconButton sx={styles.iconButton}>
-                <Button variant="outlined" size="small" color="primary">
-                  More Info
-                </Button>
-              </IconButton>
-            </Link>
+            {isLoggedIn && action && (
+              /* Stop click event propagation to prevent card click event 
+              (this means we can independantly select a favourite without triggering the page change)
+              */
+              <Box onClick={(e) => e.stopPropagation()}>
+                {action(movie)}
+              </Box>
+            )}
           </Grid>
         </Grid>
       </Box>

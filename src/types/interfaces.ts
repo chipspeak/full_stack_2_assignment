@@ -28,7 +28,7 @@ export interface BaseMovieProps {
 
   export interface BaseMovieListProps {
     movies: BaseMovieProps[];
-    action: (m: BaseMovieProps) => React.ReactNode;
+    action?: (m: BaseMovieProps) => React.ReactNode;
   }
 
   export interface Review{
@@ -190,7 +190,7 @@ export interface TvShowCastMember {
 
 export interface BaseTvShowListProps {
   tvShows: BaseTvShowProps[];
-  action: (tvShow: BaseTvShowProps) => React.ReactNode;
+  action?: (tvShow: BaseTvShowProps) => React.ReactNode;
 }
 
 export interface TVShowListPageTemplateProps extends BaseTvShowListProps {
