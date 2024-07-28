@@ -13,7 +13,6 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { BaseMovieProps, Review } from "../../types/interfaces";
 
-
 const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
     const defaultValues = {
         defaultValues: {
@@ -62,7 +61,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
           </Typography>
           <Snackbar
         sx={styles.snack}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={open}
          onClose={handleSnackClose}
       >
@@ -71,7 +70,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
           variant="filled"
           onClose={handleSnackClose}
         >
-          <Typography variant="h4">
+          <Typography variant="h5">
             Thank you for submitting a review
           </Typography>
         </Alert>
@@ -84,7 +83,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
               defaultValue=""
               render={({ field: { onChange, value } }) => (
                 <TextField
-                  sx={{ width: "40ch" }}
+                  sx={styles.textFieldStyles}
                   variant="outlined"
                   margin="normal"
                   required
@@ -111,6 +110,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
               defaultValue=""
               render={({ field: { onChange, value } }) => (
                 <TextField
+                  sx={styles.textFieldStyles}
                   variant="outlined"
                   margin="normal"
                   required
@@ -136,13 +136,13 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
               render={({ field }) => (
                 <TextField
                   {...field}
+                  sx={styles.textFieldStyles}
                   id="select-rating"
                   select
                   variant="outlined"
                   label="Rating Select"
                   value={rating}
                   onChange={handleRatingChange}
-                  helperText="Don't forget your rating"
                 >
                   {ratings.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -165,7 +165,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
               <Button
                 type="reset"
                 variant="contained"
-                color="secondary"
+                color="error"
                 sx={styles.submit}
                 onClick={() => {
                   reset({

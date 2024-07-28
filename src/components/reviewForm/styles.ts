@@ -7,15 +7,10 @@ const styles =  {
     },
     form: {
       width: "100%",
-      color: "white",
-      backgroundColor: "rgba(255, 255, 255, 0.8)"!,
+      text: "white",
       "& > * ": {
         marginTop: 2,
       },
-    },
-    textField: {
-      width: "40ch",
-      backgroundColor: "rgba(255, 255, 255, 0.5)", // plcaeholder while attempting to solve text colour issue
     },
     submit: {
       marginRight: 2,
@@ -26,5 +21,23 @@ const styles =  {
         width: "100%",
       },
     },
+    textFieldStyles: {
+      padding: 1,
+      "& .MuiInputBase-input": {
+        color: "white", // Text color
+      },
+      "& .MuiInputLabel-root": {
+        color: "white", // Label color
+      },
+      "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+        borderColor: "white", // Border color
+      },
+      "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+        borderColor: "white", // Border color on hover
+      },
+      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "white", // Border color when focused
+      },
+    }
   };
   export default styles
