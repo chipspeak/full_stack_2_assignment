@@ -10,7 +10,7 @@ import MovieFilterUI, { titleFilter, genreFilter } from "../components/movieFilt
 import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import Pagination from "@mui/material/Pagination"; // Importing pagination component
+import Pagination from "@mui/material/Pagination";
 
 // Filtering via title
 const titleFiltering = {

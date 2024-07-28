@@ -44,7 +44,7 @@ const SortTvCard: React.FC<SortTvCardProps> = ({ onSortChange, sortOption }) => 
             labelId="sort-label"
             id="sort-select"
             value={sortOption}
-            defaultValue="none"
+            defaultValue="None"
             onChange={handleSortChange}
             variant="filled"
             sx={{ 

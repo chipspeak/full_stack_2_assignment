@@ -54,7 +54,6 @@ const styles = {
 const LoginPage: React.FC = () => {
   const authContext = useContext(AuthContext);
   const { authenticate } = authContext || {};
-  const theme = useTheme();
 
   // Login function which relates to the fakeAuth function from its respective component
   const login = () => {

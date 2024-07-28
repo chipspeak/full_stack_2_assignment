@@ -47,14 +47,14 @@ const SortMoviesCard: React.FC<SortMoviesCardProps> = ({ onSortChange, sortOptio
             defaultValue="None"
             onChange={handleSortChange}
             variant="filled"
-            sx={{ 
-                backgroundColor: "#1a1a1a", color: "white",
-                "& .MuiSelect-icon": {
-                    color: "white",
-                  },
-             }}
+            sx={{
+              backgroundColor: "#1a1a1a", color: "white",
+              "& .MuiSelect-icon": {
+                color: "white",
+              },
+            }}
           >
-            <MenuItem value="">None</MenuItem>
+            <MenuItem value="none">None</MenuItem>
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="rating">Rating</MenuItem>
             <MenuItem value="popularity">Popularity</MenuItem>
