@@ -8,9 +8,6 @@ const ActorTvCredits: React.FC<BaseTvShowListProps> = ({ tvShows, action }) => {
   const tvShowsWithPoster = tvShows.filter((tvShow) => tvShow.poster_path);
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h4" component="h2" sx={{ mb: 4, ml: 2, color: '#fff' }}>
-        TV CREDITS
-      </Typography>
       <Grid container spacing={5} sx={{ padding: "20px" }}>
         <TvShowList action={action} tvShows={tvShowsWithPoster}></TvShowList>
       </Grid>
