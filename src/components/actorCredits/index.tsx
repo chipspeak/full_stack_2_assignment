@@ -12,7 +12,7 @@ const ActorCredits: React.FC<BaseMovieListProps> = ({ movies, action }) => {
         MOVIE CREDITS
       </Typography>
       <Grid container spacing={5} sx={{padding: "20px"}}>
-      <MovieList action={action} movies={moviesWithPoster}></MovieList>
+        <MovieList action={action} movies={moviesWithPoster}></MovieList>
       </Grid>
     </Box>
   );

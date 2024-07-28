@@ -2,12 +2,14 @@ import React from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ActorDetails from "../components/actorDetails";
-import ActorCredits from "../components/actorCredits"; // Import the new component
-import { getActor, getActorMovieCredits } from "../api/tmdb-api";
+import ActorCredits from "../components/actorCredits";
+import { getActor, getActorMovieCredits, getActorTvCredits } from "../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import { ActorDetailsProps, BaseMovieProps } from "../types/interfaces";
+import { ActorDetailsProps, BaseMovieProps, BaseTvShowProps } from "../types/interfaces";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import AddToTvFavouritesIcon from "../components/cardIcons/addToTvFavourites";
+import ActorTvCredits from "../components/actorTVCredits";
 
 // The bulk of the material is handled by the ActorDetails component
 const ActorDetailsPage: React.FC = () => {
@@ -30,19 +32,28 @@ const ActorDetailsPage: React.FC = () => {
     () => getActorMovieCredits(id || "")
   );
 
+  // Fetch actor's TV credits
+  const { data: tvCredits, isLoading: isTvLoading, isError: isTvError } = useQuery<{ cast: BaseTvShowProps[] }, Error>(
+    ["actorTv", id],
+    () => getActorTvCredits(id || "")
+  );
+
   // Usual use of spinner
-  if (isLoading || isMoviesLoading) {
+  if (isLoading || isMoviesLoading || isTvLoading) {
     return <Spinner />;
   }
 
-  // Same logic as elswhere
+  // Same logic as elsewhere
   if (isError) {
     return <h1>{error.message}</h1>;
   }
 
-
   if (isMoviesError) {
     return <h1>Error loading movies</h1>;
+  }
+
+  if (isTvError) {
+    return <h1>Error loading TV shows</h1>;
   }
 
   return (
@@ -50,10 +61,20 @@ const ActorDetailsPage: React.FC = () => {
       {actor ? (
         <>
           <ActorDetails actor={actor} />
-          {/* Display movies via movieList component with fave icon (looking into conditional for playlist icon etc*/}
-          <ActorCredits movies={movieCredits?.cast || []} action={(movie: BaseMovieProps) => {
-          return <AddToFavouritesIcon {...movie} />
-        }} />
+          {/* Display movies via movieList component with fave icon */}
+          <ActorCredits
+            movies={movieCredits?.cast || []}
+            action={(movie: BaseMovieProps) => {
+              return <AddToFavouritesIcon {...movie} />;
+            }}
+          />
+          {/* Display TV shows via tvList component with fave icon */}
+          <ActorTvCredits
+            tvShows={tvCredits?.cast || []}
+            action={(tvShow: BaseTvShowProps) => {
+              return <AddToTvFavouritesIcon {...tvShow} />;
+            }}
+          />
         </>
       ) : (
         <p>Waiting for actor details</p>

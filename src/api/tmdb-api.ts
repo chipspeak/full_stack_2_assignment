@@ -287,4 +287,18 @@ export const getTvGenres = () => {
  });
 };
 
+export const getActorTvCredits = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}/tv_credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch actor TV credits");
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
 
