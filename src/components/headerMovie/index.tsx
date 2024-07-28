@@ -1,10 +1,6 @@
 import React, { useContext } from "react";
-// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-// import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Paper from "@mui/material/Paper";
-// import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-// import HomeIcon from "@mui/icons-material/Home";
 import { MoviesContext } from "../../contexts/moviesContext";
 import { Avatar } from "@mui/material";
 import { MovieDetailsProps } from "../../types/interfaces"; 

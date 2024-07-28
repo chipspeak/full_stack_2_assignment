@@ -13,6 +13,7 @@ import TvShowsContextProvider from "./contexts/tvContext";
 import AddMovieReviewPage from './pages/addMovieReviewPage';
 import ActorPage from './pages/actorDetailsPage';
 import LoginPage from './pages/loginPage';
+import LogoutPage from './pages/logoutPage';
 import ProtectedRoute from './components/protectedRoute';
 import TV from "./pages/tvPage";
 import TvDetailsPage from "./pages/tvDetailsPage";
@@ -71,6 +72,7 @@ const App = () => {
             } />
             <Route path="/tvshows/:id" element={<TvDetailsPage />} /> 
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/logout" element={<LogoutPage />} />
 
             {/* Redirect any unknown routes to home */}
             <Route path="*" element={<Navigate to="/" />} />

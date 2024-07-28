@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Typography, Box } from "@mui/material";
 import { BaseTvShowListProps } from "../../types/interfaces";
-import TvShowList from "../tvShowList";
+import TvShowList from "../tvList";
 
 const ActorTvCredits: React.FC<BaseTvShowListProps> = ({ tvShows, action }) => {
   // Filter out TV shows without a poster => no point in displaying them and they do occur with more obscure actors

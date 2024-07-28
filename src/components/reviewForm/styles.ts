@@ -1,3 +1,5 @@
+// MuiInputBase -> found this helpful for this and the possibility of createTheme and ThemeProvider: https://stackoverflow.com/questions/71912902/how-to-style-input-in-material-ui
+
 const styles =  {
     root: {
       marginTop: 2,

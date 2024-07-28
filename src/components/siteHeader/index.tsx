@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -10,10 +10,12 @@ import { Squash as Hamburger } from "hamburger-react"; // helpful link here: htt
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
+import { AuthContext } from "../../contexts/authContext";
 
 const styles = {
   title: {
     flexGrow: 1,
+    marginTop: 1,
   },
   menuItem: {
     color: "white",
@@ -29,21 +31,30 @@ const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 const SiteHeader: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-  // Menu options for the hamburger menu
+  /* Get the token from the AuthContext (using this in my dummy login setup to protect routes)
+  The protected route functionality can still be examined by manually entering a url e.g /movies/favourites
+  */
+  const { token } = useContext(AuthContext) || {};
+
+  // Menu options now include conditional rendering based on the token from authContext
   const menuOptions = [
     { label: "Home", path: "/" },
-    { label: "Favorites", path: "/movies/favourites" },
-    { label: "Must Watch", path: "/movies/playlist" },
+    ...(token ? [
+      { label: "Favorites", path: "/movies/favourites" },
+      { label: "Must Watch", path: "/movies/playlist" },
+    ] : []),
     { label: "Upcoming", path: "/upcoming" },
     { label: "Top Rated", path: "/top" },
     { label: "TV Shows", path: "/tv" },
-    { label: "TV Favorites", path: "/tvshows/favourites" },
+    ...(token ? [
+      { label: "TV Favorites", path: "/tvshows/favourites" },
+    ] : []),
+    { label: token ? "Logout" : "Login", path: token ? "/logout" : "/login" },
   ];
 
   // Handle opening the hamburger menu

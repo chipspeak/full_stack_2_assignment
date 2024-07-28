@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Typography, Box } from "@mui/material";
-import { BaseTvShowProps } from "../../types/interfaces"; // Adjust the import path if necessary
-import TVShowList from "../tvList"; // Adjust the import path if necessary
+import { BaseTvShowProps } from "../../types/interfaces"; 
+import TVShowList from "../tvList"; 
 
 interface SimilarTvShowsProps {
   tvShows: BaseTvShowProps[];
@@ -15,7 +15,7 @@ const SimilarTVShows: React.FC<SimilarTvShowsProps> = ({ tvShows, action }) => {
   return (
     <Box sx={{ marginTop: "20px" }}>
       <Typography variant="h4" component="div" sx={{ textAlign: "center", color: "#fff", mb: "40px", textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}>
-        Similar TV Shows
+        SIMILAR SHOWS
       </Typography>
       <Grid container spacing={5} sx={{ padding: "20px" }}>
         <TVShowList tvShows={tvShowsWithPoster} action={action} />
