@@ -2,6 +2,24 @@ import React, { useState } from "react";
 import { Drawer, Fab, Box } from "@mui/material";
 import SortTvShowsCard from "../sortTvCard"; // Import the SortTvShowsCard component
 
+// Styles for the FAB button and the FAB container
+const styles = {
+  fabBox: {
+    position: "fixed",
+    bottom: 10,
+    right: 30,
+  },
+  fabContainer: {
+    backgroundColor: "white",
+    borderRadius: '5px',
+    color: "black",
+    "&:hover": {
+      backgroundColor: "#666666",
+      color: "white",
+    },
+  },
+};
+
 // The sort TV shows UI props interface
 interface SortTvShowsUiProps {
   onSortChange: (sortOption: string) => void;
@@ -17,23 +35,6 @@ const SortTvUi: React.FC<SortTvShowsUiProps> = ({ onSortChange }) => {
     onSortChange(sortOption); // Call the onSortChange function with the new sort option
     setSortOption(sortOption); // Set the sort option state to the new sort option
     setSortOpen(false); // Close the drawer after selecting an option
-  };
-
-  // Styles for the FAB button and the FAB container
-  const styles = {
-    fabBox: {
-      position: "fixed",
-      top: 150,
-      left: 30,
-    },
-    fabContainer: {
-      backgroundColor: "white",
-      color: "black",
-      "&:hover": {
-        backgroundColor: "#666666",
-        color: "white",
-      },
-    },
   };
 
   return (

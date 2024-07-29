@@ -86,9 +86,6 @@ const FavouriteTvShowsPage: React.FC = () => {
           );
         }}
       />
-      <Box sx={{ marginTop: 2 }}>
-        <SortTvUi onSortChange={changeSortOption} />
-      </Box>
       {totalPages > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
           <Pagination

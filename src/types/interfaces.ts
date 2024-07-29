@@ -234,7 +234,6 @@ export interface TvImage {
 
 
 // Auth 
-
 export interface AuthContextInterface {
   token: string | null;
   authenticate: ((username: string, password: string) => void);

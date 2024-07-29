@@ -99,7 +99,6 @@ const FavouriteMoviesPage = () => {
           );
         }}
       />
-      <SortMoviesUI onSortChange={changeSortOption} />
       {totalPages > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
           <Pagination

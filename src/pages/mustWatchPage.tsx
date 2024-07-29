@@ -83,11 +83,6 @@ const MustWatchPage: React.FC = () => {
           );
         }}
       />
-      <MovieFilterUI
-        onFilterValuesChange={changeFilterValues}
-        titleFilter={filterValues[0].value}
-        genreFilter={filterValues[1].value}
-      />
     </>
   );
 };

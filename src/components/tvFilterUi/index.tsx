@@ -15,34 +15,19 @@ const styles = {
   },
   fabContainer: {
     position: "fixed",
-    top: 75,
-    left: 30, // Adjusted to move the Fab button to the left
+    bottom: 10,
+    left: 30,
   },
   fab: {
     backgroundColor: "white", 
     color: "black", 
+    borderRadius: "5px",
     "&:hover": {
       backgroundColor: "#666666", 
       color: "white",
     },
   },
-  textField: {
-    '& .MuiInputBase-input': {
-      color: 'white', // Text color
-    },
-    '& .MuiInputLabel-root': {
-      color: 'white', // Label color
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white', // Border color for the input
-      },
-      '&:hover fieldset': {
-        borderColor: 'white', // Border color on hover
-      },
-    },
-  }
-}
+};
 
 // Filter function for TV shows by title
 export const titleFilter = (tvShow: BaseTvShowProps, value: string): boolean => {

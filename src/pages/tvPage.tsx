@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import TvShowListPageTemplate from "../components/templateTvShowListPage"; // Component for displaying TV shows
+import TvShowListPageTemplate from "../components/templateTvShowListPage";
 import AddToTvFavouritesIcon from "../components/cardIcons/addToTvFavourites";
 import { Box } from "@mui/material";
 import { BaseTvShowProps } from "../types/interfaces";
 import { getTvShows } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
-import SortTvUi from "../components/sortTvUi"; // Component for sorting TV shows
-import TvFilterUi, { titleFilter, genreFilter } from "../components/tvFilterUi"; // Component for filtering TV shows
+import SortTvUi from "../components/sortTvUi"; 
+import TvFilterUi, { titleFilter, genreFilter } from "../components/tvFilterUi"; 
 import { DiscoverTvShows } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import Pagination from "@mui/material/Pagination"; // Importing pagination component
+import Pagination from "@mui/material/Pagination";
+import Fuse from "fuse.js";
 
 // Filtering via title
 const titleFiltering = {
@@ -34,6 +35,7 @@ const sortByPopularity = (a: BaseTvShowProps, b: BaseTvShowProps) => b.popularit
 const TV: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("none");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [fuse, setFuse] = useState<Fuse<BaseTvShowProps> | null>(null);
   const PAGE_SIZE = 8; // Number of TV shows per page
 
   // Scroll to the top of the page when the component mounts
@@ -44,6 +46,18 @@ const TV: React.FC = () => {
   // Fetch TV shows
   const { data, error, isLoading, isError } = useQuery<DiscoverTvShows, Error>("discoverTvShows", getTvShows);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
+
+  // Using useffect to initialize the fuse instance when the data is loaded (this is the data fuse will refer to)
+  useEffect(() => {
+    if (data?.results) {
+      const fuseInstance = new Fuse(data.results, {
+        keys: ['name'],
+        includeScore: true,
+        threshold: 0.5 // Adjust the threshold for fuzzy matching
+      });
+      setFuse(fuseInstance);
+    }
+  }, [data]);
 
   if (isLoading) {
     return <Spinner />;
@@ -68,7 +82,15 @@ const TV: React.FC = () => {
   };
 
   const tvShows = data ? data.results : [];
-  const filteredTvShows = filterFunction(tvShows);
+  let filteredTvShows = filterFunction(tvShows);
+
+  // Use Fuse.js for title filtering if fuse is initialized
+  if (fuse) {
+    const titleFilterValue = filterValues[0].value;
+    if (titleFilterValue) {
+      filteredTvShows = fuse.search(titleFilterValue).map(result => result.item);
+    }
+  }
 
   // Sort TV shows
   const sortedTvShows = [...filteredTvShows].sort((a, b) => {
@@ -89,6 +111,8 @@ const TV: React.FC = () => {
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const paginatedTvShows = sortedTvShows.slice(startIndex, startIndex + PAGE_SIZE);
   const totalPages = Math.ceil(sortedTvShows.length / PAGE_SIZE);
+
+  console.log("TV shows", paginatedTvShows);
 
   return (
     <>

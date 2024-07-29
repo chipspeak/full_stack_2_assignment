@@ -28,12 +28,13 @@ const styles = {
   },
   fabContainer: {
     position: "fixed",
-    top: 75,
-    left: 30, // Adjusted to move the Fab button to the left
+    bottom: 10,
+    left: 30,
   },
   fab: {
     backgroundColor: "white", 
     color: "black", 
+    borderRadius: "5px",
     "&:hover": {
       backgroundColor: "#666666", 
       color: "white",

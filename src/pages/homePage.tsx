@@ -11,6 +11,7 @@ import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import Pagination from "@mui/material/Pagination";
+import Fuse from "fuse.js";
 
 // Filtering via title
 const titleFiltering = {
@@ -34,6 +35,7 @@ const sortByPopularity = (a: BaseMovieProps, b: BaseMovieProps) => b.popularity 
 const HomePage: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("none");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [fuse, setFuse] = useState<Fuse<BaseMovieProps> | null>(null);
   const PAGE_SIZE = 8; // Number of movies per page (tmdb seems to return about 20 results so breaking into 4s seemed best)
 
   // Scroll to the top of the page when the component mounts
@@ -44,6 +46,18 @@ const HomePage: React.FC = () => {
   // Fetch movies
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("discover", getMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
+
+  // Using useffect to initialize the fuse instance when the data is loaded (this is the data fuse will refer to)
+  useEffect(() => {
+    if (data?.results) {
+      const fuseInstance = new Fuse(data.results, {
+        keys: ['title'],
+        includeScore: true,
+        threshold: 0.5 // Adjust the threshold for fuzzy matching
+      });
+      setFuse(fuseInstance);
+    }
+  }, [data]);
 
   if (isLoading) {
     return <Spinner />;
@@ -68,7 +82,15 @@ const HomePage: React.FC = () => {
   };
 
   const movies = data ? data.results : [];
-  const filteredMovies = filterFunction(movies);
+  let filteredMovies = filterFunction(movies);
+
+  // Use Fuse.js for title filtering if fuse is initialized
+  if (fuse) {
+    const titleFilterValue = filterValues[0].value;
+    if (titleFilterValue) {
+      filteredMovies = fuse.search(titleFilterValue).map(result => result.item);
+    }
+  }
 
   // Sort movies
   const sortedMovies = [...filteredMovies].sort((a, b) => {
@@ -130,10 +152,10 @@ const HomePage: React.FC = () => {
                 color: 'white', // Change ellipsis to white
               },
             }}
-        />
-          </Box>
+          />
+        </Box>
       )}
-          
+
     </>
   );
 };

@@ -14,6 +14,7 @@ import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 import SortMoviesUI from "../components/sortMoviesUi"; // Importing sorting UI component
 import Pagination from "@mui/material/Pagination"; // Importing pagination component
 import { Box } from "@mui/material"; // Importing Box for pagination styling
+import Fuse from "fuse.js";
 
 // Same filtering as on the main page
 const titleFiltering = {
@@ -32,11 +33,15 @@ const genreFiltering = {
 This was causing issues in terms of movies that could be in faves and playlist so the filter seemed the best solution
  It essentially filters out any movies in the upcoming array that have already been found in the discover array
  Might not be the most elegant solution but I'm not sure how else to avoid the conflicts
- */
+
+ The above is rendered moot by the use of Fuse but I'm leaving it here for posterity and demonstration of 
+ a fairly hacky solution :P
+
 const filterOutDuplicates = (upcomingMovies: BaseMovieProps[], discoveredMovies: BaseMovieProps[]) => {
   const discoveredMovieIds = discoveredMovies.map(movie => movie.id);
   return upcomingMovies.filter(movie => !discoveredMovieIds.includes(movie.id));
 };
+*/
 
 // Sorting functions
 const sortByDate = (a: BaseMovieProps, b: BaseMovieProps) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
@@ -47,6 +52,7 @@ const sortByPopularity = (a: BaseMovieProps, b: BaseMovieProps) => b.popularity 
 const UpcomingMoviesPage: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("none");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [fuse, setFuse] = useState<Fuse<BaseMovieProps> | null>(null);
   const PAGE_SIZE = 8; // Number of movies per page
 
   // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
@@ -54,20 +60,29 @@ const UpcomingMoviesPage: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { data: upcomingData, error: upcomingError, isLoading: upcomingIsLoading, isError: upcomingIsError } = useQuery<DiscoverMovies, Error>("upcoming", getUpcomingMovies);
-  const { data: discoveredData, error: discoveredError, isLoading: discoveredIsLoading, isError: discoveredIsError } = useQuery<DiscoverMovies, Error>("discover", getMovies);
+  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("upcoming", getUpcomingMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
 
-  if (upcomingIsLoading || discoveredIsLoading) {
+  console.log("data: ", data);
+
+    // Using useffect to initialize the fuse instance when the data is loaded (this is the data fuse will refer to)
+    useEffect(() => {
+      if (data?.results) {
+        const fuseInstance = new Fuse(data.results, {
+          keys: ['title'],
+          includeScore: true,
+          threshold: 0.5 // Adjust the threshold for fuzzy matching
+        });
+        setFuse(fuseInstance);
+      }
+    }, [data]);
+
+  if (isLoading) {
     return <Spinner />;
   }
 
-  if (upcomingIsError) {
-    return <h1>{upcomingError.message}</h1>;
-  }
-
-  if (discoveredIsError) {
-    return <h1>{discoveredError.message}</h1>;
+  if (isError) {
+    return <h1>{error.message}</h1>;
   }
 
   // Same logic as in the other pages featuring filters (homePage.tsx)
@@ -86,14 +101,16 @@ const UpcomingMoviesPage: React.FC = () => {
   };
 
   // Destructuring the data for upcoming and discovered movies
-  const upcomingMovies = upcomingData ? upcomingData.results : [];
-  const discoveredMovies = discoveredData ? discoveredData.results : [];
+  const upcomingMovies = data ? data.results : [];
+  let filteredMovies = filterFunction(upcomingMovies);
 
-  // Filter out duplicates via the aforementioned function
-  const filteredUpcomingMovies = filterOutDuplicates(upcomingMovies, discoveredMovies);
-
-  // Setting the displayed movies as the result of the filter function (the one that checks for genre, text etc)
-  const filteredMovies = filterFunction(filteredUpcomingMovies);
+  // Use Fuse.js for title filtering if fuse is initialized
+  if (fuse) {
+    const titleFilterValue = filterValues[0].value;
+    if (titleFilterValue) {
+      filteredMovies = fuse.search(titleFilterValue).map(result => result.item);
+    }
+  }
 
   // Sort movies
   const sortedMovies = [...filteredMovies].sort((a, b) => {

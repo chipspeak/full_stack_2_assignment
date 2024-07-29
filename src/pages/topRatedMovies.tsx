@@ -10,7 +10,8 @@ import MovieFilterUI, { titleFilter, genreFilter } from "../components/movieFilt
 import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import Pagination from "@mui/material/Pagination"; // Importing pagination component
+import Pagination from "@mui/material/Pagination";
+import Fuse from "fuse.js";
 
 // Filtering via title
 const titleFiltering = {
@@ -39,6 +40,7 @@ const sortByPopularity = (a: BaseMovieProps, b: BaseMovieProps) => b.popularity 
 const TopRatedMoviesPage: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("none");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [fuse, setFuse] = useState<Fuse<BaseMovieProps> | null>(null);
   const PAGE_SIZE = 8; // Number of movies per page
 
   // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
@@ -49,6 +51,18 @@ const TopRatedMoviesPage: React.FC = () => {
   // Fetch movies
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("top", getTopMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
+
+  // Using useffect to initialize the fuse instance when the data is loaded (this is the data fuse will refer to)
+  useEffect(() => {
+    if (data?.results) {
+      const fuseInstance = new Fuse(data.results, {
+        keys: ['title'],
+        includeScore: true,
+        threshold: 0.5 // Adjust the threshold for fuzzy matching
+      });
+      setFuse(fuseInstance);
+    }
+  }, [data]);
 
   // Loading spinner
   if (isLoading) {
@@ -79,7 +93,15 @@ const TopRatedMoviesPage: React.FC = () => {
   const movies = data ? data.results : [];
 
   // Setting the displayed movies as the result of the filter function
-  const filteredMovies = filterFunction(movies);
+  let filteredMovies = filterFunction(movies);
+
+  // Use Fuse.js for title filtering if fuse is initialized
+  if (fuse) {
+    const titleFilterValue = filterValues[0].value;
+    if (titleFilterValue) {
+      filteredMovies = fuse.search(titleFilterValue).map(result => result.item);
+    }
+  }
 
   // Movie sorting is carried out by spreading the filtered movies into a new array and sorting them based on the sort option
   const sortedMovies = [...filteredMovies].sort((a, b) => {

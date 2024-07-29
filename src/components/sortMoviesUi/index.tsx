@@ -6,11 +6,12 @@ import SortMoviesCard from "../sortMoviesCard";
 const styles = {
   fabBox: {
     position: "fixed",
-    top: 150,
-    left: 30,
+    bottom: 10,
+    right: 30,
   },
   fabContainer: {
     backgroundColor: "white",
+    borderRadius: '5px',
     color: "black",
     "&:hover": {
       backgroundColor: "#666666",
