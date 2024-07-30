@@ -50,6 +50,7 @@ const SiteHeader: React.FC = () => {
     ] : []),
     { label: "Upcoming", path: "/upcoming" },
     { label: "Top Rated", path: "/top" },
+    { label: "Search", path: "/search" },
     { label: "TV Shows", path: "/tv" },
     ...(token ? [
       { label: "TV Favorites", path: "/tvshows/favourites" },

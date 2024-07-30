@@ -26,6 +26,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import "./styles.css"; 
 import PageTransition from "./pageTransition";
+import AdvancedSearchPage from "./pages/advancedSearchPage";
 
 document.body.style.backgroundColor = '#1a1a1a'; // Very dark grey/black
 document.body.style.color = 'white'; // Text color
@@ -65,7 +66,7 @@ const App = () => {
                     <Route path="/upcoming" element={<UpcomingMoviePage />} />
                     <Route path="/reviews/form" element={<AddMovieReviewPage />} />
                     <Route path="/actors/:id" element={<ActorPage />} />
-
+                    <Route path="/search" element={<AdvancedSearchPage />} />
                     {/* TV Show Routes */}
                     <Route path="/tv" element={<TV />} />
                     <Route path="/tvshows/favourites" element={
