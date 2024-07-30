@@ -67,13 +67,21 @@ const TV: React.FC = () => {
     return <h1>{error.message}</h1>;
   }
 
+  /* Modified to return to default on a value chanege to prevent conflicts due to fuzzy search data structure
+  Because fuzzy relies on the full data returned by the api and not an array of shows per se
+  It won't perform the search on the filtered array so I'm preventing the user from trying this.
+  When a search occur, genre returns to all, when a genre change occurs, search is rendered blank.
+  */
   const changeFilterValues = (type: string, value: string) => {
-    const changedFilter = { name: type, value: value };
+    const defaultFilters = {
+      title: "", // Default value for title filter
+      genre: "0", // Default value for genre filter
+    };
     const updatedFilterSet = type === "title"
-      ? [changedFilter, filterValues[1]]
-      : [filterValues[0], changedFilter];
+      ? [{ name: "title", value: value }, { name: "genre", value: defaultFilters.genre }]
+      : [{ name: "title", value: defaultFilters.title }, { name: "genre", value: value }];
     setFilterValues(updatedFilterSet);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1); // Reset to first page when filters change (this aids user legibility as the first page will always be shown thus reflecting the results)
   };
 
   const changeSortOption = (sort: string) => {
