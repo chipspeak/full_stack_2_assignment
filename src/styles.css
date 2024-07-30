@@ -1,0 +1,52 @@
+/* 
+This was the best approach I could find to making my transitions happen without
+having to fundamentally reevaluate my routing strategy. I'm not sure if this is
+the best way to do it, but it works for the sake of this assigment.
+
+It should be self-explanatory, but the basic idea is that we move the new page off-screen
+and make it transparent before moving it into view (like a swipe).
+see https://reactcommunity.org/react-transition-group/ for more info
+*/
+
+/* Ensure no horizontal overflow (i.e the scrollbar appearing as the transition occurs) */
+body, html {
+  overflow-x: hidden;
+}
+/* The overlay for transitions, ensuring a seamless experience without disrupting the content underneath */
+.transition-overlay {
+  position: fixed; /* Stays fixed in place during transitions */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #1a1a1a; /* Matches the site's background color for consistency */
+  z-index: 999; /* Ensures the overlay is above all other content */
+  pointer-events: none; /* Makes the overlay non-interactive (preventing inadvertant clicks altering anything)*/
+  overflow: hidden; /* Prevents any content overflow from affecting the transition */
+}
+
+/* Transition for entering a page */
+.page-enter {
+  opacity: 0; /* Starts with the new page fully transparent */
+  transform: translateX(100%); /* Starts the new page off-screen to the right */
+}
+
+/* Transition for the page entering the view */
+.page-enter-active {
+  opacity: 1; /* Fades in the page */
+  transform: translateX(0); /* Moves the page into view */
+  transition: opacity 300ms ease-out, transform 300ms ease-out; /* Defines the timing and easing for the transition */
+}
+
+/* Transition for exiting a page */
+.page-exit {
+  opacity: 1; /* The page starts fully visible */
+  transform: translateX(0); /* The page starts at its visible position */
+}
+
+/* Transition for the page leaving the view */
+.page-exit-active {
+  opacity: 0; /* Fades out the page */
+  transform: translateX(-100%); /* Moves the page off-screen to the left */
+  transition: opacity 300ms ease-in, transform 300ms ease-in; /* Defines the timing and easing for the transition */
+}

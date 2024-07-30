@@ -18,12 +18,14 @@ import ProtectedRoute from './components/protectedRoute';
 import TV from "./pages/tvPage";
 import TvDetailsPage from "./pages/tvDetailsPage";
 import { QueryClientProvider, QueryClient } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools"; removed after moving filter buttons to bottom
 import MustWatchPage from "./pages/mustWatchPage";
 import FavouriteTvShowsPage from "./pages/favouriteTvShowsPage";
 import AuthProvider from "./contexts/authContext";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
+import "./styles.css"; 
+import PageTransition from "./pageTransition";
 
 document.body.style.backgroundColor = '#1a1a1a'; // Very dark grey/black
 document.body.style.color = 'white'; // Text color
@@ -41,48 +43,50 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-      <AuthProvider>
-        <SiteHeader /> 
-        <MoviesContextProvider>
-        <TvShowsContextProvider>
-          <Routes>
-            {/* Movie Routes */}
-            <Route path="/movies/favourites" element={
-              <ProtectedRoute>
-                <FavouriteMoviesPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/movies/playlist" element={<MustWatchPage />} />
-            <Route path="/movies/:id" element={<MoviePage />} />
-            <Route path="/reviews/:id" element={<MovieReviewPage />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/top" element={<TopRatedMoviesPage />} />
-            <Route path="/upcoming" element={<UpcomingMoviePage />} />
-            <Route path="/reviews/form" element={<AddMovieReviewPage />} />
-            <Route path="/actors/:id" element={<ActorPage />} />
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <SiteHeader />
+            <MoviesContextProvider>
+              <TvShowsContextProvider>
+                <PageTransition>
+                  <Routes>
+                    {/* Movie Routes */}
+                    <Route path="/movies/favourites" element={
+                      <ProtectedRoute>
+                        <FavouriteMoviesPage />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/movies/playlist" element={<MustWatchPage />} />
+                    <Route path="/movies/:id" element={<MoviePage />} />
+                    <Route path="/reviews/:id" element={<MovieReviewPage />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/top" element={<TopRatedMoviesPage />} />
+                    <Route path="/upcoming" element={<UpcomingMoviePage />} />
+                    <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+                    <Route path="/actors/:id" element={<ActorPage />} />
 
-            {/* TV Show Routes */}
-            <Route path="/tv" element={<TV/>} /> 
-            <Route path="/tvshows/favourites" element={
-              <ProtectedRoute>
-                <FavouriteTvShowsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/tvshows/:id" element={<TvDetailsPage />} /> 
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/logout" element={<LogoutPage />} />
+                    {/* TV Show Routes */}
+                    <Route path="/tv" element={<TV />} />
+                    <Route path="/tvshows/favourites" element={
+                      <ProtectedRoute>
+                        <FavouriteTvShowsPage />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/tvshows/:id" element={<TvDetailsPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/logout" element={<LogoutPage />} />
 
-            {/* Redirect any unknown routes to home */}
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-          </TvShowsContextProvider>
-        </MoviesContextProvider>
-      </AuthProvider>
-      </BrowserRouter>
-      {/* <ReactQueryDevtools initialIsOpen={false} />*/}
-    </QueryClientProvider>
+                    {/* Redirect any unknown routes to home */}
+                    <Route path="*" element={<Navigate to="/" />} />
+                  </Routes>
+                </PageTransition>
+              </TvShowsContextProvider>
+            </MoviesContextProvider>
+          </AuthProvider>
+        </BrowserRouter>
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      </QueryClientProvider>
     </ThemeProvider>
   );
 };

@@ -1,6 +1,6 @@
-// theme.js or theme.ts
 import { createTheme } from '@mui/material/styles';
 
+// necessary for some elements such as the navbar currently. If I had more time this would be site wide but we'll see.
 const theme = createTheme({
   palette: {
     background: {
