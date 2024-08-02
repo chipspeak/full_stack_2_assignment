@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import MovieCard from "../components/movieCard";
-import SampleMovie from "./sampleData";
+import {sampleMovie } from "./sampleData";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "../contexts/moviesContext";
 // import { action } from "@storybook/addon-actions";
@@ -23,14 +23,14 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   args: {
     action: (movie ) => <AddToFavouritesIcon {...movie} />,
-    movie: SampleMovie,
+    movie: sampleMovie,
 
   }
 
 };
 Basic.storyName = "Default";
 
-const sampleNoPoster = { ...SampleMovie, poster_path: undefined };
+const sampleNoPoster = { ...sampleMovie, poster_path: undefined };
 export const Exceptional: Story = {
   args: {
     movie: sampleNoPoster,

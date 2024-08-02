@@ -27,6 +27,7 @@ import theme from "./theme";
 import "./styles.css"; 
 import PageTransition from "./pageTransition";
 import AdvancedSearchPage from "./pages/advancedSearchPage";
+import TvReviewPage from "./pages/tvReviewPage";
 
 document.body.style.backgroundColor = '#1a1a1a'; // Very dark grey/black
 document.body.style.color = 'white'; // Text color
@@ -61,6 +62,7 @@ const App = () => {
                     <Route path="/movies/playlist" element={<MustWatchPage />} />
                     <Route path="/movies/:id" element={<MoviePage />} />
                     <Route path="/reviews/:id" element={<MovieReviewPage />} />
+                    <Route path="/tvreviews/:id" element={<TvReviewPage />} />
                     <Route path="/" element={<HomePage />} />
                     <Route path="/top" element={<TopRatedMoviesPage />} />
                     <Route path="/upcoming" element={<UpcomingMoviePage />} />

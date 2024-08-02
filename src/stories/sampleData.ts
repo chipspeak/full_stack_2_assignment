@@ -1,4 +1,5 @@
-export default {
+// Sample movie data
+export const sampleMovie = {
   adult: false,
   backdrop_path: "/5Iw7zQTHVRBOYpA0V6z0yypOPZh.jpg",
   belongs_to_collection: {
@@ -27,14 +28,12 @@ export default {
       name: "Action",
     },
   ],
-  homepage:
-    "https://www.starwars.com/films/star-wars-episode-viii-the-last-jedi",
+  homepage: "https://www.starwars.com/films/star-wars-episode-viii-the-last-jedi",
   id: 181808,
   imdb_id: "tt2527336",
   original_language: "en",
   original_title: "Star Wars: The Last Jedi",
-  overview:
-    "Rey develops her newly discovered abilities with the guidance of Luke Skywalker, who is unsettled by the strength of her powers. Meanwhile, the Resistance prepares to do battle with the First Order.",
+  overview: "Rey develops her newly discovered abilities with the guidance of Luke Skywalker, who is unsettled by the strength of her powers. Meanwhile, the Resistance prepares to do battle with the First Order.",
   popularity: 44.208,
   poster_path: "/kOVEVeg59E0wsnXmF9nrh6OmWII.jpg",
   production_companies: [
@@ -78,4 +77,15 @@ export default {
   video: false,
   vote_average: 7,
   vote_count: 9692,
+};
+// Sample actor data
+export const sampleActor = {
+  id: 10859,
+  name: "Ryan Reynolds",
+  profile_path: "/2Orm6l3z3zukF1q0AgIOUqvwLeB.jpg",
+  biography: "Ryan Reynolds is a  actor known for his roles in 'Deadpool', 'The Proposal', and '6 Underground'. He began his career in television and achieved fame with his performances in both comedic and dramatic roles.",
+  known_for_department: "Acting",
+  birthday: "1976-10-23",
+  place_of_birth: "Vancouver, British Columbia, Canada",
+  popularity: 144.335,
 };

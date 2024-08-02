@@ -79,6 +79,8 @@ const CastMembers: React.FC<CastMembersProps> = ({ movieId, tvShowId }) => {
   /* Pointing the img tag's source to the cast member's profile picture 
   (It was also possible to add their character as the api returns this but I feel this is more visually pleasing)
   */
+
+ console.log(filteredCastMembers);
   return (
     <Box sx={styles.castContainer}>
       {filteredCastMembers.map((castMember) => (

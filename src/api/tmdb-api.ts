@@ -312,6 +312,17 @@ export const getTvShowCast = (id: string | number) => {
     });
 };
 
+export const getTvReviews = (id: string | number) => { //movie id can be string or number
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}&include_adult=false`
+  )
+    .then((res) => res.json())
+    .then((json) => {
+      // console.log(json.results);
+      return json.results;
+    });
+};
+
 export const getSimilarTvShows = (id: string | number) => {
   return fetch(
     `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1&include_adult=false&page=1`

@@ -1,7 +1,7 @@
 
 import type { Meta } from '@storybook/react';
 import MovieList from "../components/movieList";
-import SampleMovie from "./sampleData";
+import { sampleMovie } from "./sampleData";
 import { MemoryRouter } from "react-router";
 
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -24,11 +24,11 @@ export default meta;
 
 export const Basic = () => {
   const movies = [
-    { ...SampleMovie, id: 1 },
-    { ...SampleMovie, id: 2 },
-    { ...SampleMovie, id: 3 },
-    { ...SampleMovie, id: 4 },
-    { ...SampleMovie, id: 5 },
+    { ...sampleMovie, id: 1 },
+    { ...sampleMovie, id: 2 },
+    { ...sampleMovie, id: 3 },
+    { ...sampleMovie, id: 4 },
+    { ...sampleMovie, id: 5 },
   ];
   return (
     <Grid container spacing={5}>

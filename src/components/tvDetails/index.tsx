@@ -8,6 +8,7 @@ import Drawer from "@mui/material/Drawer";
 import { TvShowDetailsProps } from "../../types/interfaces";
 import { Box } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
+import TvReviews from "../tvReviews";
 
 // Styling for the TV show details section
 const styles = {
@@ -94,6 +95,10 @@ const TVShowDetails: React.FC<TvShowDetailsProps> = (tvShow) => {
           Reviews
         </Fab>
       </Box>
+
+      <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <TvReviews {...tvShow} />
+      </Drawer>
     </>
   );
 };
