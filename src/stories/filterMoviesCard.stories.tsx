@@ -5,7 +5,6 @@ import { action } from "@storybook/addon-actions";
 import { QueryClientProvider, QueryClient } from "react-query";
 import React from 'react';
 
-// updated to allow for commit after earlier accidental commit
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

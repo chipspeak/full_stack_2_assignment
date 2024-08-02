@@ -15,7 +15,7 @@ const meta = {
     (Story) => (
       <ThemeProvider theme={theme}>
         <MemoryRouter>
-          <AuthContextProvider> {/* Provide authentication context */}
+          <AuthContextProvider>
             {Story()}
           </AuthContextProvider>
         </MemoryRouter>

@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../contexts/authContext';
-import { Card, CardContent, Typography, Button, Box, useTheme } from '@mui/material';
+import { Card, CardContent, Typography, Button, Box } from '@mui/material';
 import theme from '../theme';
 
-/* Styles for button (trying to get this to work led to the discovery of the need for the useTheme import)
-This may in turn lead to an implementaion of a dark/light theme if I have time and this is similar to svelte
-*/
+// Largely matching the cards used elsewhere in the app
 const styles = {
   container: {
     display: 'flex',
@@ -40,6 +38,7 @@ const styles = {
     variant: 'body2',
     color: 'textPrimary',
     gutterBottom: true,
+    marginBottom: 1,
   },
   button: {
     color: 'white',
@@ -55,19 +54,18 @@ const LoginPage: React.FC = () => {
   const authContext = useContext(AuthContext);
   const { authenticate } = authContext || {};
 
-  // Login function which relates to the fakeAuth function from its respective component
-  const login = () => {
-    const password = Math.random().toString(36).substring(7);
-    authenticate && authenticate('user1', password);
+  // Function to login with GitHub (drawn from the AuthContext)
+  const login = async () => {
+    if (authenticate) {
+      await authenticate();
+    }
   };
 
   return (
     <Box sx={styles.container}>
       <Card sx={styles.card}>
         <CardContent sx={styles.cardContent}>
-          <Typography>
-            Login Page
-          </Typography>
+          <Typography sx={{marginBottom: 2}}>Welcome to PMDB</Typography>
           <Typography sx={styles.description}>
             Click the button to login
           </Typography>
@@ -76,7 +74,7 @@ const LoginPage: React.FC = () => {
             sx={styles.button}
             onClick={login}
           >
-            Submit
+            Login with GitHub
           </Button>
         </CardContent>
       </Card>

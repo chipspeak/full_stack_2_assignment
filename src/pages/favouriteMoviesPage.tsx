@@ -49,14 +49,6 @@ const FavouriteMoviesPage = () => {
   // Filtering through the favourites list to display only the movies that match the filter criteria
   const allFavourites = favouriteMovieQueries.map((q) => q.data).filter((movie) => movie !== undefined);
 
-  // Debugging: Log the fetched movies and their genres
-  console.log("All Favourites:", allFavourites);
-  allFavourites.forEach((movie) => {
-    console.log("Movie Title:", movie.title, "Genres:", movie.genres);
-  });
-
-
-
   // Sort movies
   const sortedMovies = [...allFavourites].sort((a, b) => {
     switch (sortOption) {
@@ -80,6 +72,7 @@ const FavouriteMoviesPage = () => {
   // Calculate total pages based on total movies and page size
   const totalPages = Math.ceil(sortedMovies.length / PAGE_SIZE);
 
+  // Function to change the sort option
   const changeSortOption = (sort: React.SetStateAction<string>) => {
     setSortOption(sort);
     setCurrentPage(1); // Reset to first page when sorting changes
@@ -94,11 +87,11 @@ const FavouriteMoviesPage = () => {
           return (
             <>
               <AddToFavouritesIcon {...movie} />
-              <WriteReview {...movie} />
             </>
           );
         }}
       />
+      <SortMoviesUI onSortChange={changeSortOption} />
       {totalPages > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
           <Pagination

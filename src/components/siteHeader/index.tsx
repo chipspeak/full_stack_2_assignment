@@ -11,6 +11,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
 import { AuthContext } from "../../contexts/authContext";
+import MovieIcon from "@mui/icons-material/Movie";
+import Tv from "@mui/icons-material/Tv";
+import { RecentActors } from "@mui/icons-material";
+
 
 const styles = {
   title: {
@@ -77,9 +81,9 @@ const SiteHeader: React.FC = () => {
         sx={{ backgroundColor: "#1a1a1a", boxShadow: "none" }}
       >
         <Toolbar>
-          <Typography variant="h4" sx={styles.title}>
-            TMDB
-          </Typography>
+        <Typography variant="h4" sx={styles.title}>
+      PMDB       <MovieIcon />  <Tv /> <RecentActors />
+    </Typography>
 
           {isMobile ? (
             <>

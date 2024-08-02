@@ -2,11 +2,13 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../contexts/authContext";
 
+// LogoutPage component
 const LogoutPage: React.FC = () => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
   const { signout } = authContext || {};
 
+  // Function to logout (drawn from the AuthContext)
   useEffect(() => {
     if (signout) {
       signout();

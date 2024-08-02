@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { GenreData } from '../types/interfaces';
 
-// Create a theme to use with the component
 const theme = createTheme();
 
 // Dummy data for genres
@@ -39,10 +38,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => {
     // States for the controlled component
-    const [media, setMedia] = useState<string>('');  // Default empty string
-    const [genre, setGenre] = useState<string>('');  // Default empty string
-    const [year, setYear] = useState<string>('');    // Default empty string
-    const [rating, setRating] = useState<string>(''); // Default empty string
+    const [media, setMedia] = useState<string>('');  
+    const [genre, setGenre] = useState<string>('');  
+    const [year, setYear] = useState<string>('');    
+    const [rating, setRating] = useState<string>(''); 
 
     // Function to simulate search submit
     const handleSearchSubmit = () => {

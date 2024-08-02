@@ -11,9 +11,9 @@ import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
-import SortMoviesUI from "../components/sortMoviesUi"; // Importing sorting UI component
-import Pagination from "@mui/material/Pagination"; // Importing pagination component
-import { Box } from "@mui/material"; // Importing Box for pagination styling
+import SortMoviesUI from "../components/sortMoviesUi"; 
+import Pagination from "@mui/material/Pagination"; 
+import { Box } from "@mui/material"; 
 import Fuse from "fuse.js";
 
 // Same filtering as on the main page
@@ -71,7 +71,7 @@ const UpcomingMoviesPage: React.FC = () => {
         const fuseInstance = new Fuse(data.results, {
           keys: ['title'],
           includeScore: true,
-          threshold: 0.5 // Adjust the threshold for fuzzy matching
+          threshold: 0.5 // Adjust the threshold for fuzzy matching 
         });
         setFuse(fuseInstance);
       }

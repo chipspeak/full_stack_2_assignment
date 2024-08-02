@@ -9,11 +9,12 @@ but this was the simplest and most effective approach I could find asI couldn't 
 */
 const PageTransition: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
+  console.log("Transition Key:", location.key);
 
   return (
     <TransitionGroup>
       <CSSTransition
-        key={location.key}
+        key={location.pathname} // changed from location.key to prevent a bug where the page tried to render 3 times
         classNames="page"
         timeout={300}
       >

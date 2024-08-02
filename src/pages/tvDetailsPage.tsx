@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import TvShowDetails from "../components/tvDetails"; // Replace with your TV show details component
-import TemplateTvShowPage from "../components/templateTvShowPage"; // Replace with your TV show template page component
-import { getTvShow } from '../api/tmdb-api'; // Replace with your TV show API function
+import TvShowDetails from "../components/tvDetails"; 
+import TemplateTvShowPage from "../components/templateTvShowPage"; 
+import { getTvShow } from '../api/tmdb-api'; 
 import { useQuery } from "react-query";
-import Spinner from '../components/spinner'; // Spinner component for loading state
-import { TvShowDetailsProps } from "../types/interfaces"; // Replace with your TV show details props interface
+import Spinner from '../components/spinner'; 
+import { TvShowDetailsProps } from "../types/interfaces"; 
 
 const TvDetailsPage: React.FC = () => {
   // Scroll to the top of the page when the component mounts

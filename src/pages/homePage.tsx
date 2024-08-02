@@ -128,8 +128,6 @@ const HomePage: React.FC = () => {
   // Calculate total pages by using the length of the sorted movies array divided by the page size
   const totalPages = Math.ceil(sortedMovies.length / PAGE_SIZE);
 
-
-  console.log("Movies", movies);
   return (
     <>
       <MovieListPageTemplate

@@ -5,6 +5,7 @@ import PageTemplate from "../components/templateMoviePage";
 import MovieReview from "../components/movieReview";
 import { Box } from "@mui/system";
 
+// MovieReviewPage component
 const MovieReviewPage: React.FC = () => {
   // Scroll to the top of the page when the component mounts (this ensures no errant page positions after loads from hyperlinks)
   useEffect(() => {

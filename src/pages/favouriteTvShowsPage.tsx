@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import TVShowListPageTemplate from "../components/templateTvShowListPage"; // Component for displaying TV shows
-import WriteReview from "../components/cardIcons/writeReview"; // Ensure this is compatible with TV shows
-import { BaseTvShowProps } from "../types/interfaces"; // Ensure this is the correct interface for TV shows
+import TVShowListPageTemplate from "../components/templateTvShowListPage"; 
+import WriteReview from "../components/cardIcons/writeReview"; 
+import { BaseTvShowProps } from "../types/interfaces"; 
 import { TvShowsContext } from "../contexts/tvContext";
 import { useQueries } from "react-query";
-import { getTvShow } from "../api/tmdb-api"; // Ensure this is the correct API function for TV shows
+import { getTvShow } from "../api/tmdb-api"; 
 import Spinner from "../components/spinner";
-import AddToTvFavouritesIcon from "../components/cardIcons/addToTvFavourites"; // Ensure this is the correct icon component for TV shows
+import AddToTvFavouritesIcon from "../components/cardIcons/addToTvFavourites"; 
 import { Box } from "@mui/material";
-import Pagination from "@mui/material/Pagination"; // Importing pagination component
+import Pagination from "@mui/material/Pagination"; 
 import SortTvUi from "../components/sortTvUi";
 
 const FavouriteTvShowsPage: React.FC = () => {
@@ -28,7 +28,7 @@ const FavouriteTvShowsPage: React.FC = () => {
   const favouriteTvShowQueries = useQueries(
     tvShowIds.map((tvShowId) => ({
       queryKey: ["tvShow", tvShowId],
-      queryFn: () => getTvShow(tvShowId.toString()), // Ensure this function fetches TV shows
+      queryFn: () => getTvShow(tvShowId.toString()),
     }))
   );
 
@@ -76,16 +76,17 @@ const FavouriteTvShowsPage: React.FC = () => {
     <>
       <TVShowListPageTemplate
         title="TV FAVOURITES"
-        tvShows={paginatedTvShows} // Ensure this prop is handled in your PageTemplate for TV shows
+        tvShows={paginatedTvShows} 
         action={(tvShow: BaseTvShowProps) => {
           return (
             <>
               <AddToTvFavouritesIcon {...tvShow} />
-              {/* <WriteReview {...tvShow} /> {/* Ensure this component is compatible with TV shows */}
+
             </>
           );
         }}
       />
+      <SortTvUi onSortChange={changeSortOption} />
       {totalPages > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
           <Pagination

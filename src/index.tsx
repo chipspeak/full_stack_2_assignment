@@ -94,8 +94,9 @@ const App = () => {
   );
 };
 
+// commented out strict mode as I was having difficulty with duplicate mounts
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <App />
-  </React.StrictMode>
+  // </React.StrictMode>
 );
