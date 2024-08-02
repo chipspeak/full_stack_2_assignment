@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, InputLabel, MenuItem, FormControl, Select, Button, Typography, Card, CardContent, CardActions } from '@mui/material';
 import { GenreData } from '../../types/interfaces';
 
@@ -33,14 +33,14 @@ const styles = {
       color: '#ffffff',
     },
   },
+  mandatory: {
+    color: 'red', // Color to indicate that a field is mandatory
+  }
 };
 
-/* The props for our component intention is to also provide a media prop i.e movie or tv
-the function in api will then handle the logic and make an alternate call for tv
-this will hopefully prevent the need for a duplicate page for tv
-
-*/
 interface AdvancedSearchCardProps {
+  media: string;
+  setMedia: (media: string) => void;
   genre: string;
   setGenre: (genre: string) => void;
   year: string;
@@ -51,8 +51,10 @@ interface AdvancedSearchCardProps {
   genres: GenreData['genres'];
 }
 
-// The component itself (using the same logic as the filter cards to populate genres via api)
+// The component itself (using the same logic as the filter cards to populate genres via api call from parent component)
 const AdvancedSearchCard: React.FC<AdvancedSearchCardProps> = ({
+  media,
+  setMedia,
   genre,
   setGenre,
   year,
@@ -62,21 +64,50 @@ const AdvancedSearchCard: React.FC<AdvancedSearchCardProps> = ({
   handleSearchSubmit,
   genres
 }) => {
-  const genreOptions = [{ id: "", name: "All Genres" }, ...(genres || [])];
-  // Rating option between 1 and 10 for the api's 'gte' parameter
+  const [error, setError] = useState<string | null>(null);
+  
+  // Options for the genre, rating, and year selects
+  const genreOptions = [{ id: "", name: "Select Genre" }, ...(genres || [])];
   const ratingOptions = Array.from({ length: 10 }, (_, i) => i + 1);
-  // Year options from 2024 to 1919 backwards (so that we start the scroll at recent years)
   const yearOptions = Array.from({ length: 105 }, (_, i) => 2024 - i);
+
+  // Validate the media and proceed with search if valid (we need to ensure that media is selected before proceeding)
+  const validateAndSearch = () => {
+    if (media === "") {
+      setError("Media is required.");
+      return;
+    }
+    setError(null);
+    handleSearchSubmit();
+  };
 
   return (
     <Card sx={styles.card}>
       <CardContent sx={styles.cardContent}>
-        <Typography variant="h5" sx={{mb:'10px'}}>
+        <Typography variant="h5" sx={{ mb: '10px' }}>
           Advanced Search
         </Typography>
+
+        {/* The media select */}
+        <InputLabel id="media-label" sx={styles.inputLabel}>
+          Media
+        </InputLabel>
+        <FormControl fullWidth>
+          <Select
+            labelId="media-label"
+            id="media-select"
+            value={media}
+            onChange={(e) => setMedia(e.target.value)}
+            sx={styles.select}
+          >
+            <MenuItem value="movie">Movie</MenuItem>
+            <MenuItem value="tv">TV Show</MenuItem>
+          </Select>
+        </FormControl>
+
         {/* The genre select */}
         <InputLabel id="genre-label" sx={styles.inputLabel}>
-          Genre
+          Genre 
         </InputLabel>
         <FormControl fullWidth>
           <Select
@@ -93,6 +124,7 @@ const AdvancedSearchCard: React.FC<AdvancedSearchCardProps> = ({
             ))}
           </Select>
         </FormControl>
+
         {/* The year select */}
         <InputLabel id="year-label" sx={styles.inputLabel}>
           Release Year
@@ -112,6 +144,7 @@ const AdvancedSearchCard: React.FC<AdvancedSearchCardProps> = ({
             ))}
           </Select>
         </FormControl>
+
         {/* The rating select */}
         <InputLabel id="rating-label" sx={styles.inputLabel}>
           Rating
@@ -131,12 +164,16 @@ const AdvancedSearchCard: React.FC<AdvancedSearchCardProps> = ({
             ))}
           </Select>
         </FormControl>
+
+        {/* Error message */}
+        {error && <Typography color="error" sx={{ mt: 2 }}>{error}</Typography>}
       </CardContent>
-      {/* The cards submit button */}
+
+      {/* The card's submit button */}
       <CardActions sx={{ justifyContent: 'center', mb: 2 }}>
         <Button
           variant="contained"
-          onClick={handleSearchSubmit}
+          onClick={validateAndSearch}
           sx={styles.button}
         >
           Search

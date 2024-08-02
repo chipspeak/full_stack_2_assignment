@@ -29,6 +29,7 @@ allow the user to search via movies or tv, hopefully preventing the need for dup
 */
 export const getSearchResults = (
   // the params for the moment (purely movie focused)
+  media: string,
   genre: string,
   year: string,
   rating: string
@@ -42,35 +43,52 @@ export const getSearchResults = (
   const startDate = formatDate(year, 1, 1); // January 1st of the year
   const endDate = formatDate(year, 12, 31); // December 31st of the year
 
-  // the base url for the api call prior to any additional params (+= the params to add them to the url)
-  let url = `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=1`;
-
-  // Add genre filter if provided (keeping these optional as any submission of the card will result in an api call) 
-  if (genre) {
-    url += `&with_genres=${genre}`;
+  let url = "";
+  if (media === "movie") {
+    // the base url for the api call prior to any additional params (+= the params to add them to the url)
+    url = `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=1`;
   }
 
-  // Add date range filter based on year
-  if (year) {
-    url += `&release_date.gte=${startDate}&release_date.lte=${endDate}`;
+  if (media === "tv") {
+    // the base url for the api call prior to any additional params (+= the params to add them to the url)
+    url = `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=1`;
   }
 
-  // Add rating filter if provided
-  if (rating) {
-    url += `&vote_average.gte=${rating}`;
-  }
+    // Add genre filter if provided (keeping these optional as any submission of the card will result in an api call) 
+    if (genre) {
+      url += `&with_genres=${genre}`;
+    }
+
+    // Add date range filter based on year (primary_release_date to obscure re-releases)
+    if (year) {
+      if (media === "movie") {
+        url += `&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}`;
+      } else if (media === "tv") {
+        url += `&first_air_date.gte=${startDate}&first_air_date.lte=${endDate}`;
+      }
+    }
+
+    // Add rating filter if provided
+    if (rating) {
+      url += `&vote_average.gte=${rating}`;
+    }
 
   /* Fetch the data from the url before converting to json as elsewhere but then only returning the results
-this saves us needing to destruct the results from the data object in the component and allows us to immediately
-pass these to a list component in the view (e.g the MovieListPageTemplate component)
+  this saves us needing to destruct the results from the data object in the component and allows us to immediately
+  pass these to a list component in the view (e.g the MovieListPageTemplate component)
   */
-  return fetch(url)
-    .then(res => res.json())
-    .then(data => data.results) // Return only results
-    .catch(err => {
-      console.error("Error fetching data:", err);
-      throw err;
-    });
+console.log("Fetching URL:", url); // Debugging: Log URL to check parameters
+
+return fetch(url)
+  .then(res => res.json())
+  .then(data => {
+    console.log("API Response Data:", data); // Debugging: Log response data
+    return data.results; // Return only results
+  })
+  .catch(err => {
+    console.error("Error fetching data:", err);
+    throw err;
+  });
 };
 
 /* This is pretty hacky but it's to try and successfully get upcoming movies while being able to fuzzy search
