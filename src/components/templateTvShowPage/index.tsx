@@ -182,7 +182,8 @@ const TemplateTvShowPage: React.FC<TemplateTvShowPageProps> = ({ tvShow, childre
                 ))}
               </Box>
               <a href={generateJustWatchUrl(tvShow.name)} target="_blank">
-                <img src={JustWatchLogo} alt="JustWatch" style={styles.justWatchLogo} />
+              <img src="/images/justwatch-logo.png" alt="JustWatch" style={styles.justWatchLogo} />
+
               </a>
             </Box>
           )}

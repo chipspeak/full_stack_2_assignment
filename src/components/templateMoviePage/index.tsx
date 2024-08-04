@@ -8,7 +8,6 @@ import Box from "@mui/material/Box";
 import SimilarMovies from "../similarMovies";
 import AddToFavouritesIcon from "../cardIcons/addToFavourites";
 import JustWatchLogo from "../../images/justwatch-logo.png";
-import { Padding } from "@mui/icons-material";
 
 /*
 A note on JustWatch, I've attempted to sign up to use their widget but I don't think it's possible
@@ -206,7 +205,8 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
               </Box>
               <a href={generateJustWatchUrl(movie.title)} target="_blank" // Specifying the link to be opened in a new tab
               >
-                <img src={JustWatchLogo} alt="JustWatch" style={styles.justWatchLogo} />
+                <img src="/images/justwatch-logo.png" alt="JustWatch" style={styles.justWatchLogo} />
+
               </a>
             </Box>
           )}
