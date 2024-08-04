@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
 import HomePage from "./pages/homePage";
@@ -10,7 +9,6 @@ import SiteHeader from "./components/siteHeader";
 import UpcomingMoviePage from "./pages/upcomingMoviesPage";
 import MoviesContextProvider from "./contexts/moviesContext";
 import TvShowsContextProvider from "./contexts/tvContext";
-import AddMovieReviewPage from './pages/addMovieReviewPage';
 import ActorPage from './pages/actorDetailsPage';
 import LoginPage from './pages/loginPage';
 import LogoutPage from './pages/logoutPage';
@@ -64,7 +62,6 @@ const App = () => {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/top" element={<TopRatedMoviesPage />} />
                     <Route path="/upcoming" element={<UpcomingMoviePage />} />
-                    <Route path="/reviews/form" element={<AddMovieReviewPage />} />
                     <Route path="/actors/:id" element={<ActorPage />} />
                     <Route path="/search" element={<AdvancedSearchPage />} />
                     {/* TV Show Routes */}

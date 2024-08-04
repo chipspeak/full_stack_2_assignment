@@ -148,7 +148,7 @@ const HomePage: React.FC = () => {
           <Pagination
             count={totalPages}
             page={currentPage}
-            onChange={(event, value) => setCurrentPage(value)}
+            onChange={(_event, value) => setCurrentPage(value)}
             color="primary"
             sx={{
               '& .MuiPaginationItem-root': {

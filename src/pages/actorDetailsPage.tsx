@@ -62,7 +62,7 @@ const ActorDetailsPage: React.FC = () => {
   }
 
   // This function is necessary to prevent the toggle from being selected regardless of the side the user chooses
-  const handleToggleChange = (event: React.MouseEvent<HTMLElement>, newValue: "movies" | "tv" | null) => {
+  const handleToggleChange = (_event: React.MouseEvent<HTMLElement>, newValue: "movies" | "tv" | null) => {
     /* We have to account for null as repeated presses without new data causes MUI to return null
     so in our use case we only want the toggle change to occur when the event provides non-null data 
     */
@@ -123,7 +123,7 @@ const ActorDetailsPage: React.FC = () => {
               <Pagination
                 count={totalPages}
                 page={currentPage}
-                onChange={(event, value) => setCurrentPage(value)}
+                onChange={(_event, value) => setCurrentPage(value)}
                 color="primary"
                 sx={{
                   '& .MuiPaginationItem-root': {

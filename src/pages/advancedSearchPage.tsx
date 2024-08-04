@@ -16,7 +16,7 @@ const AdvancedSearchPage: React.FC = () => {
   const [year, setYear] = useState<string>('');
   const [rating, setRating] = useState<string>('');
   const [results, setResults] = useState<any[]>([]);
-  const [showCard, setShowCard] = useState(true);
+  const [, setShowCard] = useState(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Fetch genres based on media type (doing this because tv and movie genres are not 1-2-1 so we need some conditional logic)
@@ -84,7 +84,7 @@ const AdvancedSearchPage: React.FC = () => {
               <Pagination
                 count={totalPages}
                 page={currentPage}
-                onChange={(event, value) => setCurrentPage(value)}
+                onChange={(_event, value) => setCurrentPage(value)}
                 color="primary"
                 sx={{
                   '& .MuiPaginationItem-root': {

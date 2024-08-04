@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, InputLabel, MenuItem, FormControl, Select, Button, Typography, Card, CardContent, CardActions } from '@mui/material';
+import { InputLabel, MenuItem, FormControl, Select, Button, Typography, Card, CardContent, CardActions } from '@mui/material';
 import { GenreData } from '../../types/interfaces';
 
 // Styling for the advanced search card (in keeping with the minimal style and monochrome color scheme)

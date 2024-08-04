@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import MovieListPageTemplate from "../components/templateMovieListPage";
-import WriteReview from "../components/cardIcons/writeReview";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
-import useFiltering from "../hooks/useFiltering";
 import SortMoviesUI from "../components/sortMoviesUi";
 import { Box } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
@@ -97,7 +95,7 @@ const FavouriteMoviesPage = () => {
           <Pagination
             count={totalPages}
             page={currentPage}
-            onChange={(event, value) => setCurrentPage(value)}
+            onChange={(_event, value) => setCurrentPage(value)}
             color="primary"
             sx={{
               '& .MuiPaginationItem-root': {

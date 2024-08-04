@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import AdvancedSearchCard from '../components/advancedSearchCard';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { GenreData } from '../types/interfaces';
 
@@ -36,7 +36,7 @@ type Story = StoryObj<typeof meta>;
 
 // Default story for the AdvancedSearchCard component
 export const Default: Story = {
-  render: (args) => {
+  render: (_args) => {
     // States for the controlled component
     const [media, setMedia] = useState<string>('');  
     const [genre, setGenre] = useState<string>('');  
@@ -65,13 +65,13 @@ export const Default: Story = {
   },
   args: {
     media: '',
-    setMedia: (media: string) => {},
+    setMedia: (_media: string) => {},
     genre: '',
-    setGenre: (genre: string) => {},
+    setGenre: (_genre: string) => {},
     year: '',
-    setYear: (year: string) => {},
+    setYear: (_year: string) => {},
     rating: '',
-    setRating: (rating: string) => {},
+    setRating: (_rating: string) => {},
     handleSearchSubmit: () => {},
     genres: [],
 },

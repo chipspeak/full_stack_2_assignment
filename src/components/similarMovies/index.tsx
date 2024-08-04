@@ -37,7 +37,7 @@ const SimilarMovies: React.FC<SimilarMoviesProps> = ({ movies, action }) => {
           <Pagination
             count={totalPages}
             page={currentPage}
-            onChange={(event, value) => setCurrentPage(value)}
+            onChange={(_event, value) => setCurrentPage(value)}
             color="primary"
             sx={{
               '& .MuiPaginationItem-root': {

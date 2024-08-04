@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { BaseMovieProps } from "../types/interfaces";
-import { getUpcomingMovies, getMovies } from "../api/tmdb-api";
+import { getUpcomingMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, {
   titleFilter,
@@ -167,7 +167,7 @@ const UpcomingMoviesPage: React.FC = () => {
           <Pagination
             count={totalPages}
             page={currentPage}
-            onChange={(event, value) => setCurrentPage(value)}
+            onChange={(_event, value) => setCurrentPage(value)}
             color="primary"
             sx={{
               '& .MuiPaginationItem-root': {

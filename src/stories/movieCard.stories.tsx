@@ -4,7 +4,6 @@ import {sampleMovie } from "./sampleData";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "../contexts/moviesContext";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
-import React from 'react';
 
 const meta = {
   title: 'Home Page/MovieCard',

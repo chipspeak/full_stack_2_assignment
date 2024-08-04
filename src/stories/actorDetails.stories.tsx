@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ActorDetails from "../components/actorDetails";
 import { sampleActor } from "./sampleData";
 import { MemoryRouter } from "react-router";
-import React from 'react';
+
 
 const meta = {
   title: 'Home Page/ActorDetails',

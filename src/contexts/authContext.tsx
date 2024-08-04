@@ -78,7 +78,7 @@ const AuthContextProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     updateAuthState();
 
     // Subscribe to authentication state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
         setToken(session.access_token);
         setUser(session.user); // Update user information

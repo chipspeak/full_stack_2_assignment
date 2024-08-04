@@ -3,7 +3,6 @@ import SortMoviesCard from "../components/sortMoviesCard";
 import { MemoryRouter } from "react-router";
 import { action } from "@storybook/addon-actions";
 import { QueryClientProvider, QueryClient } from "react-query";
-import React from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
