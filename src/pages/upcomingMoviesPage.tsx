@@ -169,14 +169,6 @@ const UpcomingMoviesPage: React.FC = () => {
             page={currentPage}
             onChange={(_event, value) => setCurrentPage(value)}
             color="primary"
-            sx={{
-              '& .MuiPaginationItem-root': {
-                color: 'white', // Change page numbers to white
-              },
-              '& .MuiPaginationItem-ellipsis': {
-                color: 'white', // Change ellipsis to white
-              },
-            }}
           />
         </Box>
       )}

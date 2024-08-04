@@ -81,7 +81,7 @@ const SiteHeader: React.FC = () => {
       >
         <Toolbar>
         <Typography variant="h4" sx={styles.title}>
-      PMDB       <MovieIcon />  <Tv /> <RecentActors />
+      PMDB       <MovieIcon />  <Tv /> <RecentActors /> <Typography variant="subtitle2">Data by TMDB</Typography>
     </Typography>
 
           {isMobile ? (
