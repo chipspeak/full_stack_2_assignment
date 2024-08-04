@@ -239,4 +239,5 @@ export interface AuthContextInterface {
   user: any; 
   authenticate: () => Promise<void>; 
   signout: () => Promise<void>;
+  loading: boolean;
 }
