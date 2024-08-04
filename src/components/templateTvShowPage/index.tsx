@@ -6,7 +6,6 @@ import TvShowCastMembers from "../tvCastMembers";
 import Spinner from "../spinner";
 import Box from "@mui/material/Box";
 import AddToTvFavouritesIcon from "../cardIcons/addToTvFavourites";
-import JustWatchLogo from "../../images/justwatch-logo.png";
 import SimilarTvShows from "../similarTvShows";
 
 const styles = {

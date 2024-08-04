@@ -7,7 +7,6 @@ import Spinner from "../spinner";
 import Box from "@mui/material/Box";
 import SimilarMovies from "../similarMovies";
 import AddToFavouritesIcon from "../cardIcons/addToFavourites";
-import JustWatchLogo from "../../images/justwatch-logo.png";
 
 /*
 A note on JustWatch, I've attempted to sign up to use their widget but I don't think it's possible
