@@ -7,7 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
-import { getTvReviews } from "../../api/tmdb-api"; // Update this function to fetch TV reviews
+import { getTvReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
 import { TvShowDetailsProps, Review } from "../../types/interfaces"; 
 import { Typography } from "@mui/material";

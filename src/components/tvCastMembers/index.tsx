@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { getTvShowCast } from "../../api/tmdb-api";
-import { TvShowCastMember } from "../../types/interfaces"; // Adjust import according to your types
+import { TvShowCastMember } from "../../types/interfaces";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";

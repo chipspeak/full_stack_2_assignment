@@ -19,7 +19,6 @@ import TV from "./pages/tvPage";
 import TvDetailsPage from "./pages/tvDetailsPage";
 import { QueryClientProvider, QueryClient } from "react-query";
 // import { ReactQueryDevtools } from "react-query/devtools"; removed after moving filter buttons to bottom
-import MustWatchPage from "./pages/mustWatchPage";
 import FavouriteTvShowsPage from "./pages/favouriteTvShowsPage";
 import AuthProvider from "./contexts/authContext";
 import { ThemeProvider } from "@mui/material/styles";
@@ -59,7 +58,6 @@ const App = () => {
                         <FavouriteMoviesPage />
                       </ProtectedRoute>
                     } />
-                    <Route path="/movies/playlist" element={<MustWatchPage />} />
                     <Route path="/movies/:id" element={<MoviePage />} />
                     <Route path="/reviews/:id" element={<MovieReviewPage />} />
                     <Route path="/tvreviews/:id" element={<TvReviewPage />} />

@@ -40,7 +40,7 @@ const SiteHeader: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-  /* Get the token from the AuthContext (using this in my dummy login setup to protect routes)
+  /* Get the token from the AuthContext (updated to OAuth from dummy data)
   The protected route functionality can still be examined by manually entering a url e.g /movies/favourites
   */
   const { token } = useContext(AuthContext) || {};
@@ -50,7 +50,6 @@ const SiteHeader: React.FC = () => {
     { label: "Home", path: "/" },
     ...(token ? [
       { label: "Favorites", path: "/movies/favourites" },
-      { label: "Must Watch", path: "/movies/playlist" },
     ] : []),
     { label: "Upcoming", path: "/upcoming" },
     { label: "Top Rated", path: "/top" },

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../contexts/authContext';
 import { Card, CardContent, Typography, Button, Box } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import theme from '../theme';
 
 // Largely matching the cards used elsewhere in the app
@@ -46,6 +47,10 @@ const styles = {
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
     },
+    marginBottom: 1,
+  },
+  icon: {
+    marginRight: 1,
   },
 };
 
@@ -54,7 +59,7 @@ const LoginPage: React.FC = () => {
   const authContext = useContext(AuthContext);
   const { authenticate } = authContext || {};
 
-  // Function to login with GitHub (drawn from the AuthContext)
+  // Function to login via github (this is specified in auth context. Tried adding google but this proved too time consuming)
   const login = async () => {
     if (authenticate) {
       await authenticate();
@@ -65,15 +70,14 @@ const LoginPage: React.FC = () => {
     <Box sx={styles.container}>
       <Card sx={styles.card}>
         <CardContent sx={styles.cardContent}>
-          <Typography sx={{marginBottom: 2}}>Welcome to PMDB</Typography>
-          <Typography sx={styles.description}>
-            Click the button to login
-          </Typography>
+          <Typography sx={{ marginBottom: 2 }}>Welcome to PMDB</Typography>
+
           <Button
             variant="contained"
             sx={styles.button}
-            onClick={login}
+            onClick={() => login()}
           >
+            <GitHubIcon sx={styles.icon} />
             Login with GitHub
           </Button>
         </CardContent>

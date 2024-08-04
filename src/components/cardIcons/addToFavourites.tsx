@@ -4,28 +4,28 @@ import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BaseMovieProps } from "../../types/interfaces";
 
+// Component to add/remove a movie from favourites (basic idea is to allow a toggleable button rather than multiple)
 const AddToFavouritesIcon: React.FC<BaseMovieProps> = (movie) => {
-  const context = useContext(MoviesContext);
-  const { favourites } = context;
+    const { favourites, addToFavourites, removeFromFavourites } = useContext(MoviesContext);
 
-  // Check if the movie is in favourites
-  const isFavourite = favourites.includes(movie.id);
+    // Check if the movie is in favourites
+    const isFavourite = favourites.includes(movie.id);
 
-  const onUserSelect = () => {
-    /* Toggle favourites status -> this may be slightly hacky but it prevents duplicates of the icon from the old method
-    and it also prevents any conflicts with other icons passed as props */
-    if (isFavourite) {
-      context.removeFromFavourites(movie);
-    } else {
-      context.addToFavourites(movie);
-    }
-  };
+    // Toggle between adding and removing from favourites
+    const onUserSelect = () => {
+        if (isFavourite) {
+            removeFromFavourites(movie); // Remove from favourites
+        } else {
+            addToFavourites(movie); // Add to favourites
+        }
+    };
 
-  return (
-    <IconButton aria-label="add to favorites" onClick={onUserSelect}>
-      <FavoriteIcon style={{ color: isFavourite ? "red" : "white" }} fontSize="medium" />
-    </IconButton>
-  );
+    // Return the button with the appropriate colour based on whether the movie is in favourites  
+    return (
+        <IconButton aria-label="add to favorites" onClick={onUserSelect}>
+            <FavoriteIcon style={{ color: isFavourite ? "red" : "white" }} fontSize="medium" />
+        </IconButton>
+    );
 };
 
 export default AddToFavouritesIcon;

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import TVShowListPageTemplate from "../components/templateTvShowListPage"; 
-import WriteReview from "../components/cardIcons/writeReview"; 
 import { BaseTvShowProps } from "../types/interfaces"; 
 import { TvShowsContext } from "../contexts/tvContext";
 import { useQueries } from "react-query";

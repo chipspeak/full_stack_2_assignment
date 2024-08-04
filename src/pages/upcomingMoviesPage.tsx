@@ -10,11 +10,11 @@ import MovieFilterUI, {
 import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 import SortMoviesUI from "../components/sortMoviesUi"; 
 import Pagination from "@mui/material/Pagination"; 
 import { Box } from "@mui/material"; 
 import Fuse from "fuse.js";
+import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 
 // Same filtering as on the main page
 const titleFiltering = {
@@ -153,7 +153,7 @@ const UpcomingMoviesPage: React.FC = () => {
         title="UPCOMING MOVIES"
         movies={paginatedMovies}
         action={(movie: BaseMovieProps) => {
-          return <AddToPlaylistIcon {...movie} />
+          return <AddToFavouritesIcon {...movie} />
         }}
       />
       <MovieFilterUI

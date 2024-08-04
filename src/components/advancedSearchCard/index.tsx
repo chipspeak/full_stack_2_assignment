@@ -38,6 +38,7 @@ const styles = {
   }
 };
 
+// Props for the advanced search card
 interface AdvancedSearchCardProps {
   media: string;
   setMedia: (media: string) => void;
