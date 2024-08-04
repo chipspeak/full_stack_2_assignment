@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import SimilarMovies from "../similarMovies";
 import AddToFavouritesIcon from "../cardIcons/addToFavourites";
 import JustWatchLogo from "../../images/justwatch-logo.png";
+import { Padding } from "@mui/icons-material";
 
 /*
 A note on JustWatch, I've attempted to sign up to use their widget but I don't think it's possible
@@ -20,6 +21,7 @@ const styles = {
   pageContainer: {
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
     minHeight: "100vh",
     position: "relative",
   },
@@ -28,7 +30,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: "20px",
+    paddingTop: "20px",
     position: "relative",
     zIndex: 2,
     backgroundSize: "cover",
@@ -39,14 +41,15 @@ const styles = {
   detailsContainer: {
     backgroundColor: "rgba(0, 0, 0, 0.3)",
     borderRadius: "8px",
-    padding: "20px",
+    paddingBottom: "20px",
+    paddingTop: "20px",
     maxWidth: "80%",
     textAlign: "center",
     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
   },
   trailerContainer: {
-    width: "100%",
-    maxWidth: "1000px",
+    width: "80%",
+    maxWidth: "80%",
     aspectRatio: "16/9",
     marginBottom: "50px",
     border: "none",

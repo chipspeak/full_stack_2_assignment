@@ -22,7 +22,7 @@ const styles = {
     top: 0,
     right: 0,
     height: "100%",
-    width: "40%",
+    width: "50%",
     backgroundColor: "#1a1a1a", 
     color: "white",
     padding: "20px",

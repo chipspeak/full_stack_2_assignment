@@ -22,7 +22,7 @@ const styles = {
     top: 0,
     right: 0,
     height: "100%",
-    width: "40%", // This just about catches the full review link too without scrolling
+    width: "50%", // This just about catches the full review link too without scrolling
     backgroundColor: "#1a1a1a", 
     color: "white",
     padding: "20px",
