@@ -6,7 +6,7 @@ __Name:__ Patrick O'Connor
 
 __Deployed URL:__ https://pmdb.vercel.app/
 
-__Video Demo:__ ..... URL of your YouTube video demonstration ....
+__Video Demo:__ https://youtu.be/kUx8l7Tkw0E
 
 This repository contains an implementation of the Movie Fans Web Application from the HDip in Computer Science, Full Stack 2 labs. This application has been expanded on for this assignment and renamed PMDB
 
@@ -101,6 +101,12 @@ __Public Routes__
 + Theme provider: https://react-ui.dev/components/ThemeProvider Arrived at this while trying to solve issues with css styles/sx values not being correctly inherited by components. This largely serves to wrap the site in the same styling as my components to prevent any whitespace in the gaps between components. In an ideal world I'd implement this site-wide to save on unnecessary css duplication. See src/theme.tsx for the specific code.
 + Page transitions: https://reactcommunity.org/react-transition-group After trying a few different solutions to page transitions in React this proved to be the simplest and only solution I could get to work. In src/pageTransitions.tsx we use location.pathname as a key and when this value changes, the CSSTransition component from React is triggered. The actual aesthetic of this is governed by src/styles.css .
 + Pagination: https://mui.com/material-ui/react-pagination/ This was also relatively straightforward to implement and can be found throughout the main pages on the site. There was already a chain of arrays for filtering/sorting etc and pagination was added to this so that the final results are passed to the pagination component. useState is used to determine the current page and additional logic handles the total number of pages via Math.Ceil. This logic is discussed in greater detail within the code comments (see pages/homePage.tsx lines 119 - 130 for example.)
+
+
+### Known issues/bugs
+
++ As seen around 5:15 in the video demo, occasionally the tv filter incorrectly inherits the genres from the movie filter. A refresh resolved this so I assume it's a mounting issue but with the video submitted I'm leaving it in.
+
 
 ### Use of AI
 
