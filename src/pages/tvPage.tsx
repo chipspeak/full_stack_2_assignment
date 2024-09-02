@@ -5,8 +5,8 @@ import { Box } from "@mui/material";
 import { BaseTvShowProps } from "../types/interfaces";
 import { getTvShows } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
-import SortTvUi from "../components/sortTvUi"; 
-import TvFilterUi, { titleFilter, genreFilter } from "../components/tvFilterUi"; 
+import SortTvUi from "../components/sortTvUi";
+import TvFilterUi, { titleFilter, genreFilter } from "../components/tvFilterUi";
 import { DiscoverTvShows } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
@@ -36,28 +36,35 @@ const TV: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("none");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [fuse, setFuse] = useState<Fuse<BaseTvShowProps> | null>(null);
-  const PAGE_SIZE = 8; // Number of TV shows per page
+  const PAGE_SIZE = 20; // Number of TV shows per page
 
-  // Scroll to the top of the page when the component mounts
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // Define the range of pages to fetch
+  const TOTAL_PAGES_TO_FETCH = 500;
+  const pageRange = Array.from({ length: TOTAL_PAGES_TO_FETCH }, (_, i) => i + 1);
 
   // Fetch TV shows
-  const { data, error, isLoading, isError } = useQuery<DiscoverTvShows, Error>("discoverTvShows", getTvShows);
+  const { data, error, isLoading, isError } = useQuery<DiscoverTvShows, Error>(
+    ["discoverTvShows", pageRange],
+    () => getTvShows(pageRange),
+    { keepPreviousData: true }
+  );
+
   const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
 
-  // Using useffect to initialize the fuse instance when the data is loaded (this is the data fuse will refer to)
   useEffect(() => {
     if (data?.results) {
       const fuseInstance = new Fuse(data.results, {
         keys: ['name'],
         includeScore: true,
-        threshold: 0.5 // Adjust the threshold for fuzzy matching
+        threshold: 0.5
       });
       setFuse(fuseInstance);
     }
   }, [data]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (isLoading) {
     return <Spinner />;
@@ -67,32 +74,23 @@ const TV: React.FC = () => {
     return <h1>{error.message}</h1>;
   }
 
-  /* Modified to return to default on a value chanege to prevent conflicts due to fuzzy search data structure
-  Because fuzzy relies on the full data returned by the api and not an array of shows per se
-  It won't perform the search on the filtered array so I'm preventing the user from trying this.
-  When a search occur, genre returns to all, when a genre change occurs, search is rendered blank.
-  */
   const changeFilterValues = (type: string, value: string) => {
-    const defaultFilters = {
-      title: "", // Default value for title filter
-      genre: "0", // Default value for genre filter
-    };
+    const defaultFilters = { title: "", genre: "0" };
     const updatedFilterSet = type === "title"
-      ? [{ name: "title", value: value }, { name: "genre", value: defaultFilters.genre }]
-      : [{ name: "title", value: defaultFilters.title }, { name: "genre", value: value }];
+      ? [{ name: "title", value }, { name: "genre", value: defaultFilters.genre }]
+      : [{ name: "title", value: defaultFilters.title }, { name: "genre", value }];
     setFilterValues(updatedFilterSet);
-    setCurrentPage(1); // Reset to first page when filters change (this aids user legibility as the first page will always be shown thus reflecting the results)
+    setCurrentPage(1);
   };
 
   const changeSortOption = (sort: string) => {
     setSortOption(sort);
-    setCurrentPage(1); // Reset to first page when sort changes
+    setCurrentPage(1);
   };
 
   const tvShows = data ? data.results : [];
   let filteredTvShows = filterFunction(tvShows);
 
-  // Use Fuse.js for title filtering if fuse is initialized
   if (fuse) {
     const titleFilterValue = filterValues[0].value;
     if (titleFilterValue) {
@@ -100,7 +98,6 @@ const TV: React.FC = () => {
     }
   }
 
-  // Sort TV shows
   const sortedTvShows = [...filteredTvShows].sort((a, b) => {
     switch (sortOption) {
       case "none":
@@ -120,16 +117,12 @@ const TV: React.FC = () => {
   const paginatedTvShows = sortedTvShows.slice(startIndex, startIndex + PAGE_SIZE);
   const totalPages = Math.ceil(sortedTvShows.length / PAGE_SIZE);
 
-  console.log("TV shows", paginatedTvShows);
-
   return (
     <>
       <TvShowListPageTemplate
         title="DISCOVER TV SHOWS"
         tvShows={paginatedTvShows}
-        action={(tvShow: BaseTvShowProps) => {
-          return <AddToTvFavouritesIcon {...tvShow} />;
-        }}
+        action={(tvShow: BaseTvShowProps) => <AddToTvFavouritesIcon {...tvShow} />}
       />
       <TvFilterUi
         onFilterValuesChange={changeFilterValues}

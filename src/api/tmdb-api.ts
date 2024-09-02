@@ -6,18 +6,39 @@ and to provide the data for the hyperlink to the service.
 
 // Movie API calls
 
-export const getMovies = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
-  ).then((response) => {
-    if (!response.ok)
-      throw new Error(`Unable to fetch movies. Response status: ${response.status}`);
-    return response.json();
-  })
-    .catch((error) => {
-      throw error;
-    });
+export const getMovies = async (pageRange: number[]) => {
+  // Create an array of fetch promises for each page in the range
+  const requests = pageRange.map(page =>
+    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Unable to fetch movies. Response status: ${response.status}`);
+        }
+        return response.json();
+      })
+  );
+
+  try {
+    // Wait for all fetch requests to complete
+    const responses = await Promise.all(requests);
+
+    // Combine results from all pages
+    const combinedResults = responses.flatMap(response => response.results);
+    const uniqueResults = Array.from(new Map(combinedResults.map(movie => [movie.id, movie])).values());
+
+
+    return {
+      page: 1,
+      results: uniqueResults,
+      total_pages: responses[0].total_pages, // Use total pages from the first response
+      total_results: responses.reduce((total, response) => total + response.total_results, 0) // Sum of all results
+    };
+  } catch (error) {
+    throw new Error(`Error fetching movies: ${(error as Error).message}`);
+  }
 };
+
+
 
 /* Function to get search results with parameters
 inspired by the custom api call to update our upcoming results
@@ -266,18 +287,39 @@ export const getActorMovieCredits = (id: string | number) => {
 
 // Tv section
 
-export const getTvShows = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
-  ).then((response) => {
-    if (!response.ok)
-      throw new Error(`Unable to fetch TV shows. Response status: ${response.status}`);
-    return response.json();
-  })
-    .catch((error) => {
-      throw error;
-    });
+export const getTvShows = async (pageRange: number[]) => {
+  const apiKey = import.meta.env.VITE_TMDB_KEY;
+
+  // Create an array of fetch promises for each page in the range
+  const requests = pageRange.map(page =>
+    fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=en-US&include_adult=false&include_video=false&page=${page}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Unable to fetch TV shows. Response status: ${response.status}`);
+        }
+        return response.json();
+      })
+  );
+
+  try {
+    // Wait for all fetch requests to complete
+    const responses = await Promise.all(requests);
+
+    // Combine results from all pages
+    const combinedResults = responses.flatMap(response => response.results);
+    const uniqueResults = Array.from(new Map(combinedResults.map(tvShow => [tvShow.id, tvShow])).values());
+
+    return {
+      page: 1, // Placeholder page value
+      results: uniqueResults,
+      total_pages: responses[0].total_pages, // Use total pages from the first response
+      total_results: uniqueResults.length // Adjusted to count unique results
+    };
+  } catch (error) {
+    throw new Error(`Error fetching TV shows: ${(error as Error).message}`);
+  }
 };
+
 
 export const getTvShow = (id: string) => {
   return fetch(
